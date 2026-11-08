@@ -1,0 +1,19 @@
+[
+  {
+    "test": "desktop.daemon-disconnect",
+    "status": "PASS",
+    "evidence": "北\n收件箱\n工作\n团队\n聊天\n自动化\n设置\n设置\n个人\n个人资料\n偏好设置\n通知\n快捷键\nAPI Token\n工作区\n常规\n成员\n任务与工作流\n工作流\n唤醒\n标签\n属性\n快捷操作\n连接与扩展\n代码\n消息渠道\nMCP 服务器\n本设备\n守护进程\n更新\n守护进程\n启动应用时自动运行\n登录时自动启动。\n退出应用时自动停止\n关闭桌面端时停止守护进程。\nCLI 状态\n未找到 multica CLI。安装后才能管理守护进程。\n安装指南\n诊断信息\n状态\n已停止\n运行时长\n—\nPID\n—\n守护进程 ID\n—\n配置档案\ndesktop-api.multica.ai\n服务器 URL\n—\n设备名称\n—\n工作区\n—\n🦊\n聊天验收测试\nCodex 的连接不稳定——回复可能延迟。\n\n\n\n\n🦊\nCodex"
+  },
+  {
+    "test": "reconnect-observation-window",
+    "status": "INFO",
+    "elapsed_ms": 16041
+  },
+  {
+    "test": "desktop.daemon-reconnect",
+    "status": "PASS",
+    "old_pid": 22761,
+    "new_pid": 28672,
+    "evidence": "北\n收件箱\n工作\n团队\n聊天\n自动化\n设置\n设置\n个人\n个人资料\n偏好设置\n通知\n快捷键\nAPI Token\n工作区\n常规\n成员\n任务与工作流\n工作流\n唤醒\n标签\n属性\n快捷操作\n连接与扩展\n代码\n消息渠道\nMCP 服务器\n本设备\n守护进程\n更新\n守护进程\n\n此设备的守护进程在应用之外运行（例如 WSL2 中），因此应用无法启动或停止它。请在相应环境中运行 multica daemon start / multica daemon stop。\n\n启动应用时自动运行\n登录时自动启动。\n退出应用时自动停止\n关闭桌面端时停止守护进程。\nCLI 状态\n未找到 multica CLI。安装后才能管理守护进程。\n安装指南\n诊断信息\n状态\n运行中\n运行时长\n12s\nPID\n28672\n守护进程 ID\n01a1b8da-a6fe-74dd-9969-101ddee18c69\n配置档案\ndesktop-api.multica.ai\n服务器 URL\nhttps://api.multica.ai\n设备名称\nlocalhost\n工作区\n1\n🦊\n聊天验收测试\n\n\n\n\n🦊\nCodex"
+  }
+]

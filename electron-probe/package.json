@@ -1,0 +1,7 @@
+{
+  "name": "multica-electron-ohos-probe",
+  "version": "0.0.1",
+  "private": true,
+  "main": "main.cjs",
+  "description": "验证鸿蒙 Electron 的窗口、隔离 preload、IPC、文件和子进程能力"
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "test": "issue.search.closed.corrected",
+    "status": "PASS",
+    "note": "Initial harness incorrectly assumed list; actual CLI returns issues envelope."
+  },
+  {
+    "test": "desktop.manual-create.persisted",
+    "status": "PASS",
+    "issue": "POLA-15"
+  },
+  {
+    "test": "attachment.download.byte-roundtrip",
+    "status": "PASS"
+  },
+  {
+    "test": "autopilot.manual-run.completed",
+    "status": "PASS"
+  },
+  {
+    "test": "agent.local-directory-code-edit",
+    "status": "PASS"
+  },
+  {
+    "test": "agent.code-tests.independent-rerun",
+    "status": "PASS",
+    "note": "3/3 tests"
+  },
+  {
+    "test": "run.cancel",
+    "status": "PASS",
+    "note": "Claude did not emit any messages within bounded smoke-test window; cancelled instead of leaving it running."
+  }
+]

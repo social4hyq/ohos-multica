@@ -1,0 +1,92 @@
+diff --git a/apps/desktop/src/main/daemon-manager.ts b/apps/desktop/src/main/daemon-manager.ts
+index db7a418..f32ac38 100644
+--- a/apps/desktop/src/main/daemon-manager.ts
++++ b/apps/desktop/src/main/daemon-manager.ts
+@@ -1,5 +1,6 @@
+ import { app, ipcMain, BrowserWindow, shell, dialog, type MessageBoxOptions } from "electron";
+ import { execFile } from "child_process";
++import { get as httpGet } from "http";
+ import {
+   readFile,
+   writeFile,
+@@ -200,23 +201,34 @@ interface HealthPayload {
+   workspaces?: unknown[];
+ }
+ 
+-async function fetchHealthAtPort(
++// Electron 34 的 OpenHarmony 移植中主进程没有 WebAssembly，Node 内置 undici（全局 fetch）
++// 无法加载 llhttp，因此本机回环健康探测改用 node:http。
++function fetchHealthAtPort(
+   port: number,
+   timeoutMs = HEALTH_PROBE_TIMEOUT_MS,
+ ): Promise<HealthPayload | null> {
+-  const controller = new AbortController();
+-  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+-  try {
+-    const res = await fetch(`http://127.0.0.1:${port}/health`, {
+-      signal: controller.signal,
+-    });
+-    if (!res.ok) return null;
+-    return (await res.json()) as HealthPayload;
+-  } catch {
+-    return null;
+-  } finally {
+-    clearTimeout(timeout);
+-  }
++  return new Promise((resolve) => {
++    const req = httpGet(
++      { host: "127.0.0.1", port, path: "/health", timeout: timeoutMs, agent: false },
++      (res) => {
++        let body = "";
++        res.setEncoding("utf8");
++        res.on("data", (chunk) => {
++          body += chunk;
++        });
++        res.on("end", () => {
++          if (res.statusCode !== 200) return resolve(null);
++          try {
++            resolve(JSON.parse(body) as HealthPayload);
++          } catch {
++            resolve(null);
++          }
++        });
++      },
++    );
++    req.on("timeout", () => req.destroy(new Error("timeout")));
++    req.on("error", () => resolve(null));
++  });
+ }
+ 
+ async function fetchProfileHealth(
+@@ -1287,6 +1299,14 @@ function startPolling(): void {
+ async function bootstrapCli(): Promise<void> {
+   const bin = await resolveCliBinary();
+   if (!bin) {
++    if (process.platform === "openharmony") {
++      // HAP 内无法执行随包/下载的二进制，daemon 由外部单独运行；
++      // 仍然轮询本机健康端口，以便连接外部 daemon。
++      currentState = "stopped";
++      sendStatus({ state: "stopped" });
++      startPolling();
++      return;
++    }
+     currentState = "cli_not_found";
+     sendStatus({ state: "cli_not_found" });
+     return;
+diff --git a/apps/desktop/src/main/index.ts b/apps/desktop/src/main/index.ts
+index 9a1d4ef..a036eef 100644
+--- a/apps/desktop/src/main/index.ts
++++ b/apps/desktop/src/main/index.ts
+@@ -10,6 +10,12 @@ import {
+ } from "electron";
+ import { homedir } from "os";
+ import { join } from "path";
++
++// OpenHarmony 上 os.homedir() 指向应用沙箱不可写的用户目录，
++// ~/.multica 的创建会 EPERM；改用应用可写的 el2 files 目录。
++if (process.platform === "openharmony") {
++  process.env.HOME = "/data/storage/el2/base/files";
++}
+ import { pathToFileURL } from "url";
+ import { electronApp, optimizer, is } from "@electron-toolkit/utils";
+ import fixPath from "fix-path";

@@ -1,0 +1,267 @@
+[
+  {
+    "test": "project.create",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "issue.create",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "issue.update",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "issue.read",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "issue.status.started",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "issue.status.done",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "issue.read.done",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "comment.create",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "comment.update",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "comment.read",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "issue.child.create",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "issue.child.read",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "issue.search",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "label.create",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "label.attach",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "label.read",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "property.create",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "property.set",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "property.read",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "subscriber.add",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "subscriber.read",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "subscriber.remove",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "attachment.upload",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "workflow.create",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "workflow.read",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "workflow.project.set",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "workflow.project.read",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "agents.read",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "agent.dispatch.Claude Code",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "agent.dispatch.OpenCode",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "agent.dispatch.Codex",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "agent.dispatch.Kimi Code",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "agent.dispatch.Hermes",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "agent.dispatch.ZCode",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "agent.dispatch.Reasonix",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "agent.dispatch.DeepSeek Harness",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "issue.search.closed",
+    "status": "FAIL",
+    "error": "assertion failed: string indices must be integers, not 'str'"
+  },
+  {
+    "test": "attachment.issue.read",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "squad.create",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "squad.member.add",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "squad.members.read",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "squad.read",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "views.read",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "skills.read",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "repos.read",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "agent.skills.read",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "agent.mcp.read",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "autopilot.create",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "autopilot.read",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "autopilot.manual.trigger",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "autopilot.triggers.read",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "label.detach",
+    "status": "PASS",
+    "error": ""
+  },
+  {
+    "test": "label.detached.read",
+    "status": "PASS",
+    "error": ""
+  }
+]

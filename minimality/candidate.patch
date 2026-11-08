@@ -1,0 +1,63 @@
+diff --git a/apps/desktop/electron.vite.config.ts b/apps/desktop/electron.vite.config.ts
+index 04b44b8..59ae820 100644
+--- a/apps/desktop/electron.vite.config.ts
++++ b/apps/desktop/electron.vite.config.ts
+@@ -5,7 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
+ 
+ export default defineConfig({
+   main: {
+-    plugins: [externalizeDepsPlugin()],
++    plugins: [externalizeDepsPlugin({ exclude: ["fix-path"] })],
+   },
+   preload: {
+     // `@electron-toolkit/preload` must be bundled INTO the preload script:
+diff --git a/apps/desktop/src/main/daemon-manager.ts b/apps/desktop/src/main/daemon-manager.ts
+index db7a418..819f53d 100644
+--- a/apps/desktop/src/main/daemon-manager.ts
++++ b/apps/desktop/src/main/daemon-manager.ts
+@@ -1,4 +1,4 @@
+-import { app, ipcMain, BrowserWindow, shell, dialog, type MessageBoxOptions } from "electron";
++import { app, ipcMain, BrowserWindow, shell, dialog, net, type MessageBoxOptions } from "electron";
+ import { execFile } from "child_process";
+ import {
+   readFile,
+@@ -207,9 +207,11 @@ async function fetchHealthAtPort(
+   const controller = new AbortController();
+   const timeout = setTimeout(() => controller.abort(), timeoutMs);
+   try {
+-    const res = await fetch(`http://127.0.0.1:${port}/health`, {
+-      signal: controller.signal,
+-    });
++    const url = `http://127.0.0.1:${port}/health`;
++    // OHOS Electron cannot initialize Node's WebAssembly-based fetch parser.
++    const res = await (process.platform === "openharmony"
++      ? net.fetch(url, { signal: controller.signal })
++      : fetch(url, { signal: controller.signal }));
+     if (!res.ok) return null;
+     return (await res.json()) as HealthPayload;
+   } catch {
+@@ -1286,7 +1288,7 @@ function startPolling(): void {
+  */
+ async function bootstrapCli(): Promise<void> {
+   const bin = await resolveCliBinary();
+-  if (!bin) {
++  if (!bin && process.platform !== "openharmony") {
+     currentState = "cli_not_found";
+     sendStatus({ state: "cli_not_found" });
+     return;
+diff --git a/apps/desktop/src/main/index.ts b/apps/desktop/src/main/index.ts
+index 9a1d4ef..9c22611 100644
+--- a/apps/desktop/src/main/index.ts
++++ b/apps/desktop/src/main/index.ts
+@@ -10,6 +10,11 @@ import {
+ } from "electron";
+ import { homedir } from "os";
+ import { join } from "path";
++
++if (process.platform === "openharmony") {
++  process.env.HOME = "/data/storage/el2/base/files";
++}
++
+ import { pathToFileURL } from "url";
+ import { electronApp, optimizer, is } from "@electron-toolkit/utils";
+ import fixPath from "fix-path";

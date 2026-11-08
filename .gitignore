@@ -1,0 +1,25 @@
+# 依赖与构建产物
+source-minimal/node_modules/
+logs/
+*.hap
+
+# 会话与本机状态
+validation/state.json
+source-minimal/.multica/
+
+# Electron OHOS 预编译包（349MB，再分发条款待核查；走 CodeHub 官方下载，见 electron-prebuilt/README.md）
+electron-prebuilt/*.zip
+
+# Multica 源码不随仓（Apache-2.0 基底的 Multica License 允许衍生，但为避免膨胀与分叉歧义，
+# 按 BUILD-PIPELINE.md 从上游 clone 固定 commit 后打补丁）
+source-minimal/
+
+# DSH 桥接包 UNLICENSED，不随包发布（官方仓 multica-ai/dsh-multica-runtime 自行克隆）
+dsh-runtime/
+
+# tap worktree（social4hyq/homebrew-core 检出，发布期临时产物）
+tap-work/
+
+# 系统垃圾
+.DS_Store
+__pycache__/

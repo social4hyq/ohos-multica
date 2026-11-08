@@ -1,0 +1,63 @@
+{
+  "assignee_id": null,
+  "assignee_type": null,
+  "attachments": [
+    {
+      "chat_message_id": null,
+      "chat_session_id": null,
+      "comment_id": null,
+      "content_type": "text/plain; charset=utf-8",
+      "created_at": "2026-11-08T02:25:48Z",
+      "download_url": "/api/attachments/01a1b8f9-e9c0-75ef-943b-6cbe54c8ed76/download",
+      "filename": "attachment.txt",
+      "id": "01a1b8f9-e9c0-75ef-943b-6cbe54c8ed76",
+      "issue_id": "01a1b8f9-8dc4-796d-b373-b2621bf9a393",
+      "markdown_url": "https://multica.ai/api/attachments/01a1b8f9-e9c0-75ef-943b-6cbe54c8ed76/download",
+      "size_bytes": 45,
+      "uploader_id": "90a1cd81-a4ca-48d7-b4d5-eb8888866087",
+      "uploader_type": "member",
+      "url": "https://static.multica.ai/workspaces/09dee44b-78a6-4ff3-9efb-2af5073a24a5/01a1b8f9-e9c0-75ef-943b-6cbe54c8ed76.txt",
+      "workspace_id": "09dee44b-78a6-4ff3-9efb-2af5073a24a5"
+    }
+  ],
+  "created_at": "2026-11-08T02:25:24Z",
+  "creator_id": "90a1cd81-a4ca-48d7-b4d5-eb8888866087",
+  "creator_type": "member",
+  "description": "中文 Unicode ✅\n第二行\n\n!file[attachment.txt](https://multica.ai/api/attachments/01a1b8f9-e9c0-75ef-943b-6cbe54c8ed76/download)",
+  "due_date": null,
+  "duplicate_of": null,
+  "id": "01a1b8f9-8dc4-796d-b373-b2621bf9a393",
+  "identifier": "POLA-3",
+  "labels": [
+    {
+      "color": "#3b82f6",
+      "created_at": "2026-11-08T02:25:38Z",
+      "description": "",
+      "id": "9655c12f-5ba5-48e3-8cd9-dc4d75c1e8ef",
+      "name": "ohos-qa-20261108-102523",
+      "resource_type": "issue",
+      "updated_at": "2026-11-08T02:25:38Z",
+      "usage_count": 0,
+      "workspace_id": "09dee44b-78a6-4ff3-9efb-2af5073a24a5"
+    }
+  ],
+  "last_activity_at": "2026-11-08T02:25:48.784039Z",
+  "metadata": {},
+  "number": 3,
+  "parent_issue_id": null,
+  "position": -2,
+  "priority": "high",
+  "project_id": "b0fc04a6-6def-4a6e-ba52-e8172c7e1bed",
+  "properties": {
+    "0979135b-bde2-458c-a067-84ba027c5837": "中文属性✅"
+  },
+  "revision": 9,
+  "stage": null,
+  "start_date": null,
+  "status": "done",
+  "status_category": "done",
+  "status_name": "",
+  "title": "OHOS 验收已更新 20261108-102523",
+  "updated_at": "2026-11-08T02:25:48Z",
+  "workspace_id": "09dee44b-78a6-4ff3-9efb-2af5073a24a5"
+}

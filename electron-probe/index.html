@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Electron 鸿蒙验证</title>
+  <script>
+    window.initialProbe = {
+      preloadBeforeFirstScript: !!window.desktopAPI,
+      synchronousAppInfo: !!(window.desktopAPI && window.desktopAPI.appInfo.version),
+      nodeIntegrationDisabled: typeof require === 'undefined',
+      appInfo: window.desktopAPI ? window.desktopAPI.appInfo : null
+    };
+    document.addEventListener('DOMContentLoaded', async function () {
+      var result = window.initialProbe;
+      try {
+        result.asyncIpc = (await window.desktopAPI.ping('ohos')) === 'pong:ohos';
+        result.pass = result.preloadBeforeFirstScript && result.synchronousAppInfo &&
+          result.nodeIntegrationDisabled && result.asyncIpc;
+        var saved = await window.desktopAPI.report(result);
+        document.getElementById('result').textContent = JSON.stringify({ result: result, saved: saved }, null, 2);
+        document.getElementById('status').textContent = result.pass ? '渲染层检查通过' : '渲染层检查失败';
+      } catch (error) {
+        document.getElementById('status').textContent = '验证失败';
+        document.getElementById('result').textContent = String(error);
+      }
+    });
+  </script>
+  <style>
+    :root { color-scheme: light dark; }
+    body { margin: 24px 16px; font: 16px/1.6 system-ui, sans-serif; }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+  </style>
+</head>
+<body>
+  <h1>Electron 鸿蒙验证</h1>
+  <h2 id="status">等待原生运行时</h2>
+  <pre id="result"></pre>
+</body>
+</html>

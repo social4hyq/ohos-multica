@@ -1,0 +1,27 @@
+[
+  {
+    "test": "desktop.navigation.收件箱",
+    "status": "PASS",
+    "text": "北\n收件箱\n工作\n团队\n聊天\n自动化\n收件箱\n收件箱\n🐧\nOHOS 验收 Kimi Code 20261108-102523\n\nOHOS_QA_OK Kimi Code\n\n4 分钟\n🌞\nOHOS 验收 DeepSeek Harness 20261108-102523\n\n状态设为\n已完成\n\n4 分钟\n🐙\nOHOS 验收 Reasonix 20261108-102523\n\nI'm blocked before I can start on POLA-11, and the blocker is outside my reach. **What happened:** every shell call fails at the sandbox layer, before the command runs: > bash sandbox requested but…\n\n4 分钟\n🌙\nOHOS 验收 OpenCode 20261108-102523\n\n状态设为\n已完成\n\n4 分钟\n🦊\nOHOS 验收 Codex 20261108-102523\n\n状态设为\n已完成\n\n4 分钟\n🐯\nOHOS 验收 Hermes 20261108-102523\n\n运行失败\n\n4 分钟\n🍀\nOHOS 验收 ZCode 20261108-102523\n\n运行失败\n\n5 分钟\n🦊\nCodex 接入测试\n\n状态设为\n已完成\n\n9 分钟\n\n选择一条通知查看详情\n\n新对话\n\n\n\n\n🐳\nClaude Code"
+  },
+  {
+    "test": "desktop.navigation.工作",
+    "status": "PASS",
+    "text": "北\n收件箱\n工作\n团队\n聊天\n自动化\n📁\nOHOS 验收 20261108-102523\n工作\n视图\n我的任务\n我的智能体在做\n全部任务\n全部视图\n4\n项目\nOHOS 验收 20261108-102523\n5\nOHOS 验收 Reasonix 20261108-102523\nOHOS 验收 Hermes 20261108-102523\nOHOS 验收 ZCode 20261108-102523\nOHOS 验收 Claude Code 20261108-102523\nOHOS 验收子任务 20261108-102523\n全部 1 个项目\n📁\nOHOS 验收 20261108-102523\n待办\n5\n交给…\n\nPOLA-11\n\nOHOS 验收 Reasonix 20261108-102523\n\n🐙\nReasonix\n更新于 4 分钟前\n\nPOLA-9\n\nOHOS 验收 Hermes 20261108-102523\n\n🐯\nHermes\n更新于 4 分钟前\n\nPOLA-10\n\nOHOS 验收 ZCode 20261108-102523\n\n🍀\nZCode\n更新于 5 分钟前\n\nPOLA-5\n\nOHOS 验收 Claude Code 20261108-102523\n\n🐳\nClaude Code\n更新于 5 分钟前\n\nPOLA-4\n\nOHOS 验收子任务 20261108-102523\n\n已完成\n6\n\nPOLA-13\n\nOHOS 最小自动化验收\n\n🦊\nCodex\n更新于 2 分钟前\n\nPOLA-8\n\nOHOS 验收 Kimi Code 20261108-102523\n\n🐧\nKimi Code\n更新于 4 分钟前\n\nPOLA-12\n\nOHOS 验收 DeepSeek Harness 20261108-102523\n\n🌞\nDeepSeek Harness\n更新于 4 分钟前\n\nPOLA-6\n\nOHOS 验收 OpenCode 20261108-102523\n\n🌙\nOpenCode\n更新于 4 分钟前\n\nPOLA-7\n\nOHOS 验收 Codex 20261108-102523\n\n🦊\nCodex\n更新于 4 分钟前\n\nPOLA-3\n\nOHOS 验收已更新 20261108-102523\n\n0/1\n📁\n\nOHOS 验收 20261108-102523\n\n属性\n状态\n计划中\n优先级\n无优先级\n负责人\n无负责人\n开始日期\n开始日期\n截止日期\n截止日期\n工作流\nOHOS-QA-20261108-102523\n进度\n6/11\n描述\n\n自动化验收专用项目，不含真实业务数据\n\n会作为项目上下文提供给智能体，应用于该项目下的每次运行。\n\n资源\n\n还没有关联资源。\n\n添加资源\n添加本地目录\n\n启动本地守护进程后才能添加本机目录。\n\n新对话\n\n\n\n\n🐳\nClaude Code"
+  },
+  {
+    "test": "desktop.navigation.团队",
+    "status": "PASS",
+    "text": "北\n收件箱\n工作\n团队\n聊天\n自动化\n智能体\n团队\n智能体\n全部智能体\n8\n我的智能体\n8\n小队与成员\n小队\n1\n1 位成员\n资源\nSkills\n运行时\n1 台在线\n统计\n我的智能体\n智能体\n状态\n运行时\n模型\n最近活跃\n运行次数\n🦊\nCodex\n你\n本机 HarmonyOS 上的 Codex，沿用本机登录与默认模型配置。\n在线\nCodex (localhost)\n—\n今天\n4\n🐳\nClaude Code\n你\n本机 HarmonyOS 上的 Claude Code，沿用本机登录与默认模型配置。\n在线\nClaude (localhost)\n—\n今天\n1\n🌞\nDeepSeek Harness\n你\n本机 HarmonyOS 上的 DeepSeek Harness，通过官方 Multica DSH runtime 桥接。\n在线\nDeepSeek Harness (localhost)\n—\n今天\n1\n🐯\nHermes\n你\n本机 HarmonyOS 上的 Hermes，沿用本机登录与默认模型配置。\n在线\nHermes (localhost)\n—\n今天\n1\n🐧\nKimi Code\n你\n本机 HarmonyOS 上的 Kimi Code，沿用本机登录与默认模型配置。\n在线\nKimi (localhost)\n—\n今天\n1\n🌙\nOpenCode\n你\n本机 HarmonyOS 上的 OpenCode，沿用本机登录与默认模型配置。\n在线\nOpencode (localhost)\n—\n今天\n1\n🐙\nReasonix\n你\n本机 HarmonyOS 上的 Reasonix，沿用本机登录与默认模型配置。\n在线\nReasonix (localhost)\n—\n今天\n1\n🍀\nZCode\n你\n本机 HarmonyOS 上的 ZCode，沿用本机登录与默认模型配置。\n在线\nZCode (localhost)\n—\n今天\n1\n新对话\n\n\n\n\n🐳\nClaude Code"
+  },
+  {
+    "test": "desktop.navigation.自动化",
+    "status": "PASS",
+    "text": "北\n收件箱\n工作\n团队\n聊天\n自动化\n自动化\n自动化\n全部自动化\n1\n任务唤醒\n自动化\nOHOS-QA-20261108-102827\n从模板开始\n每日新闻摘要\nPR review 提醒\nBug 分诊\n全部自动化\n名称\n执行者\n触发器\n上次运行\n下次运行\nOHOS-QA-20261108-102827\n🦊\nCodex\n—\n2 分钟前\n—\n新对话\n\n\n\n\n🐳\nClaude Code"
+  },
+  {
+    "test": "desktop.navigation.聊天",
+    "status": "FAIL",
+    "text": "北\n收件箱\n工作\n团队\n聊天\n自动化\n聊天\n聊天\n暂无历史对话\n\n选择一个对话，或点 + 新建"
+  }
+]

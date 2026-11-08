@@ -1,0 +1,66 @@
+[
+  {
+    "agent": "Claude Code",
+    "issue": "01a1b8fa-089d-7c6c-9c5a-6431edfdaec3",
+    "run": "01a1b8fa-08b3-79bd-8e95-aee2389831ad",
+    "status": "cancelled",
+    "error": null,
+    "output": ""
+  },
+  {
+    "agent": "OpenCode",
+    "issue": "01a1b8fa-0fe7-7a32-9b9c-363d3a536ecd",
+    "run": "01a1b8fa-0fff-731a-8c5b-253e8f150d0d",
+    "status": "completed",
+    "error": null,
+    "output": "我会先读取任务和评论记录，确认验收要求后完成处理。\nOHOS_QA_OK OpenCode"
+  },
+  {
+    "agent": "Codex",
+    "issue": "01a1b8fa-16dd-7ba5-a66b-b2bd075ea2ab",
+    "run": "01a1b8fa-16f1-7cfb-b079-8ee587b9b03a",
+    "status": "completed",
+    "error": null,
+    "output": "OHOS_QA_OK Codex"
+  },
+  {
+    "agent": "Kimi Code",
+    "issue": "01a1b8fa-1de4-7888-957c-567d2ae9f9c9",
+    "run": "01a1b8fa-1dfc-7d88-a7ff-17f2c16c8017",
+    "status": "completed",
+    "error": null,
+    "output": "OHOS_QA_OK Kimi Code"
+  },
+  {
+    "agent": "Hermes",
+    "issue": "01a1b8fa-25ce-78be-8fbd-898997eeefa4",
+    "run": "01a1b8fa-25eb-7014-a852-e942adabd3d2",
+    "status": "failed",
+    "error": "hermes session/new failed: session/new: Internal error (code=-32603, data={\"details\":\"Gateway inaccessible: unsafe_control_path (/storage/Users/currentUser/.multica/hermes-sessions/ce7f8b13-fe11-463f-8121-73dc349c089e/default/01a1b8fa-25ce-78be-8fbd-898997eeefa4 is owned by uid 20001006, expected uid 20020101 (gateway user); chown it to the gateway user)\"})",
+    "output": ""
+  },
+  {
+    "agent": "ZCode",
+    "issue": "01a1b8fa-2f0a-7215-a173-77bb492e5164",
+    "run": "01a1b8fa-2f20-70d4-9556-acf928429634",
+    "status": "failed",
+    "error": "Select a model before continuing (code CONFIGURATION_ERROR)",
+    "output": ""
+  },
+  {
+    "agent": "Reasonix",
+    "issue": "01a1b8fa-3725-75f7-a155-719eb671db58",
+    "run": "01a1b8fa-373a-719c-96b8-4972a48d5e1a",
+    "status": "completed",
+    "error": null,
+    "output": "I'm blocked before I can start on POLA-11, and the blocker is outside my reach.\n\n**What happened:** every shell call fails at the sandbox layer, before the command runs:\n\n> bash sandbox requested but unavailable on this host; refusing to run unconfined. Bubblewrap is installed but cannot create a namespace here…\n\n**Why that stops the whole task:** the Multica brief requires all platform actions through the `multica` CLI (`issue get`, `issue comment list`, `issue comment add`, `issue status`). With no shell I cannot read the issue, cannot read its comment threads, cannot post the mandatory result comment, and cannot run `multica issue status POLA-11 done`. There is no MCP or other non-shell route to Multica — I checked the capability catalog. So POLA-11 remains at `todo`, untouched, and nothing has been written anywhere.\n\n**What I tried:**\n- `setting op=propose` on `sandbox.bash` → refused: \"sandbox.bash is a boundary setting; only the user changes it.\"\n- `setting op=open` on `sandbox.bash` → done; it should now be surfaced to you.\n- `ask` and `await_user` → both unavailable here (`ask` is on the permission deny list; `await_user` needs an open task list, which needs the issue read I can't do).\n\n**What I need from you** — either one, then start a new run for this issue and I'll finish POLA-11 end to end:\n1. Set `[sandbox] bash = \"off\"` in `config.toml` (or Settings → Sandbox) — commands then run unconfined, with the container as the only boundary; or\n2. Run this agent containe"
+  },
+  {
+    "agent": "DeepSeek Harness",
+    "issue": "01a1b8fa-3ee5-751c-bded-48265382ca3f",
+    "run": "01a1b8fa-3ef9-7a1f-814b-a3c647e6f9e7",
+    "status": "completed",
+    "error": null,
+    "output": "OHOS_QA_OK DeepSeek Harness"
+  }
+]

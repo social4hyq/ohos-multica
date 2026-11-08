@@ -1,0 +1,7 @@
+[
+  {
+    "test": "desktop.global-search",
+    "status": "PASS",
+    "evidence": "北\n收件箱\n工作\n团队\n聊天\n自动化\n聊天验收测试\n聊天\n🦊\n聊天验收测试\n10:32\nCodex\n·\nOHOS_CHAT_OK\n🦊\nCodex\n聊天验收测试\n\n这是聊天验收。请仅回复 OHOS_CHAT_OK，不调用工具、不修改文件、不创建任务。\n\nOHOS_CHAT_OK\n\n9s 内回复\n后续提问\n继续验收\n测试中文回复\n结束对话\n\n\n\n\n命令栏\n\n搜索、执行命令，或把工作交给智能体\n\n命令栏\nEsc\n任务\nPOLA-14\nOHOS 本地代码读写及测试验收\n🦊\n选择\n执行\nCtrl\n在新标签页打开\n>\n命令\n#\n任务\n@\n人和智能体"
+  }
+]

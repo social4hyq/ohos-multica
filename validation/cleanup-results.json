@@ -1,0 +1,42 @@
+[
+  {
+    "test": "automation.pause",
+    "status": "PASS",
+    "detail": "{\n  \"assignee_id\": \"731f2b99-85d2-4a8a-a778-57d1f51b5b72\",\n  \"assignee_type\": \"agent\",\n  \"created_at\": \"2026-11-08T02:28:39Z\",\n  \"created_by_id\": \"90a1cd81-a4ca-48d7-b4d5-eb8888866087\",\n  \"created_by_type\": \"member\",\n  \"description\": \"最小自动化验收。不要改代码，仅回复 OHOS_AUTOMATION_OK 并将任务置为 done。\",\n  \"execution_mode\": \"create_issue\",\n  \"id\": \"e0b231c0-8e28-4140-b50e-3977ae210145\",\n  \"issue_title_template\": \"OHOS QA automation {{date}}\",\n  \"last_run_at\": \"2026-11-08T02:28:41Z\",\n  \"pause_reason\": null,\n  \"proj"
+  },
+  {
+    "test": "property.archive",
+    "status": "FAIL",
+    "detail": "Could not reach the Multica server. Check your network connection.\n"
+  },
+  {
+    "test": "squad.archive",
+    "status": "FAIL",
+    "detail": "Could not reach the Multica server. Check your network connection.\n"
+  },
+  {
+    "test": "label.delete",
+    "status": "PASS",
+    "detail": "{\n  \"deleted\": true,\n  \"id\": \"9655c12f-5ba5-48e3-8cd9-dc4d75c1e8ef\"\n}\n"
+  },
+  {
+    "test": "workflow.reject-delete-while-in-use",
+    "status": "PASS",
+    "detail": "Request conflict: 1 project(s) still use this workflow; switch them to another workflow first\n"
+  },
+  {
+    "test": "project.disposable.create",
+    "status": "PASS",
+    "detail": "{\n  \"created_at\": \"2026-11-08T02:53:29Z\",\n  \"creator_id\": \"90a1cd81-a4ca-48d7-b4d5-eb8888866087\",\n  \"creator_type\": \"member\",\n  \"description\": null,\n  \"done_count\": 0,\n  \"due_date\": null,\n  \"icon\": null,\n  \"id\": \"75e72680-e4c6-4c1e-9815-4d83513ad265\",\n  \"issue_count\": 0,\n  \"lead_id\": null,\n  \"lead_type\": null,\n  \"priority\": \"none\",\n  \"resource_count\": 0,\n  \"start_date\": null,\n  \"status\": \"planned\",\n  \"title\": \"OHOS-QA-disposable-delete\",\n  \"updated_at\": \"2026-11-08T02:53:29Z\",\n  \"workflow_id\": n"
+  },
+  {
+    "test": "project.disposable.delete",
+    "status": "PASS",
+    "detail": ""
+  },
+  {
+    "test": "project.deleted.not-readable",
+    "status": "PASS",
+    "detail": "The requested resource was not found. Check the ID, or run the matching `list` command to see what exists in this workspace.\n"
+  }
+]

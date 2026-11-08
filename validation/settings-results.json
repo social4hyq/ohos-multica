@@ -1,0 +1,231 @@
+[
+  {
+    "test": "desktop.settings.navigation.preferences",
+    "status": "PASS",
+    "title": "设置",
+    "text": "北\n收件箱\n工作\n团队\n聊天\n自动化\n设置\n设置\n个人\n个人资料\n偏好设置\n通知\n快捷键\nAPI Token\n工作区\n常规\n成员\n任务与工作流\n工作流\n唤醒\n标签\n属性\n快捷操作\n连接与扩展\n代码\n消息渠道\nMCP 服务器\n本设备\n守护进程\n更新\n偏好设置\n语言与地区\n账号 · 所有设备同步\n语言\n简体中文\n时区\n用于所有工作区的日期和图表。\nAsia/Shanghai（浏览器）\nUTC+8\n外观\n仅本设备\n主题\n浅色\n深色\n跟随系统\n评论与聊天\n仅本设备\n固定底部评论栏\n回复正在运行的智能体时\n只决定默认选项，每条消息发送前仍可单独修改。\n插话到当前运行\n悬浮聊天窗\n打开任务\n仅本设备\n点击卡片或行时打开\n按住 Shift 点击会打开另一种。\n详情页\n悬浮预览\n创建任务时显示的字段\n仅本设备 · 北极星\n\n选择各创建方式的工具栏中常驻显示的字段。隐藏的字段仍可从 ⋯ 菜单使用，有值时会自动显示。\n\n字段\t智能体创建\t手动创建\n状态\t—\t\n\n优先级\t\n\t\n\n负责人\t—\t\n\n标签\t—\t\n\n项目\t\n\t\n\n截止日期\t\n\t\n\n开始日期\t—\t\n🦊\n聊天验收测试\n\n\n\n\n🦊\nCodex\n命令栏\n\n搜索、执行命令，或把工作交给智能体",
+    "headings": [
+      "设置",
+      "个人",
+      "工作区",
+      "任务与工作流",
+      "连接与扩展",
+      "本设备",
+      "偏好设置",
+      "语言与地区",
+      "外观",
+      "评论与聊天",
+      "打开任务",
+      "创建任务时显示的字段",
+      "命令栏"
+    ]
+  },
+  {
+    "test": "desktop.settings.navigation.notifications",
+    "status": "PASS",
+    "title": "设置",
+    "text": "北\n收件箱\n工作\n团队\n聊天\n自动化\n设置\n设置\n个人\n个人资料\n偏好设置\n通知\n快捷键\nAPI Token\n工作区\n常规\n成员\n任务与工作流\n工作流\n唤醒\n标签\n属性\n快捷操作\n连接与扩展\n代码\n消息渠道\nMCP 服务器\n本设备\n守护进程\n更新\n通知\n仅对 北极星 生效\n收件箱通知\n\n关闭通知后，仍可在任务中查看相关动态。\n\n分配\n你被分配或取消分配某个任务时\n状态变更\n你订阅的任务状态变化时（例如 todo、in_progress、done）\n评论\n你订阅的任务有新评论时\n提及\n有人 @ 你时，包括 @all 和 @squad\n优先级与截止日期\n你订阅的任务优先级或截止日期变更时\n智能体活动\n智能体运行失败时\n系统通知\nMultica 在后台时显示系统通知\n🦊\n聊天验收测试\n\n\n\n\n🦊\nCodex\n命令栏\n\n搜索、执行命令，或把工作交给智能体",
+    "headings": [
+      "设置",
+      "个人",
+      "工作区",
+      "任务与工作流",
+      "连接与扩展",
+      "本设备",
+      "通知",
+      "收件箱通知",
+      "系统通知",
+      "命令栏"
+    ]
+  },
+  {
+    "test": "desktop.settings.navigation.shortcuts",
+    "status": "PASS",
+    "title": "设置",
+    "text": "北\n收件箱\n工作\n团队\n聊天\n自动化\n设置\n设置\n个人\n个人资料\n偏好设置\n通知\n快捷键\nAPI Token\n工作区\n常规\n成员\n任务与工作流\n工作流\n唤醒\n标签\n属性\n快捷操作\n连接与扩展\n代码\n消息渠道\nMCP 服务器\n本设备\n守护进程\n更新\n快捷键\n仅本设备\n\n点击快捷键后按下新组合键；仅保存在本设备。\n\n恢复默认设置\n常规\n打开搜索\n搜索内容或运行命令。\nCtrl\nK\n新建任务\nC\n显示或隐藏左侧边栏\nCtrl\nB\n显示或隐藏右侧边栏\n仅在有右侧栏的页面可用。\nCtrl\n/\n显示或隐藏聊天窗\nCtrl\nJ\n在任务中查找\nCtrl\nF\n归档通知\n归档当前打开的收件箱通知；在归档列表中则取消归档。\nE\n发送\n也用于提交新任务。\nCtrl\n导航\n后退\nCtrl\n[\n前进\nCtrl\n]\n前往收件箱\n未设置\n前往聊天\n未设置\n前往我的任务\n未设置\n前往任务\n未设置\n前往项目\n未设置\n前往自动化\n未设置\n前往智能体\n未设置\n前往小队\n未设置\n前往用量\n未设置\n前往运行时\n未设置\n前往 Skills\n未设置\n前往设置\n未设置\n固定的系统快捷键\n\n不可自定义；缩放和标签页快捷键仅用于桌面端。\n\n打开设置\nCtrl\n,\n关闭当前标签页\nCtrl\nW\n选择第 1–8 个标签页\nCtrl\n1–8\n选择最后一个标签页\nCtrl\n9\n放大\nCtrl\n+\n缩小\nCtrl\n−\n重置缩放\nCtrl\n0\n关闭对话框或菜单\nEsc\n🦊\n聊天验收测试\n\n\n\n\n🦊\nCodex\n命令栏\n\n搜索、执行命令，或把工作交给智能体",
+    "headings": [
+      "设置",
+      "个人",
+      "工作区",
+      "任务与工作流",
+      "连接与扩展",
+      "本设备",
+      "快捷键",
+      "常规",
+      "导航",
+      "固定的系统快捷键",
+      "命令栏"
+    ]
+  },
+  {
+    "test": "desktop.settings.navigation.workflows",
+    "status": "PASS",
+    "title": "设置",
+    "text": "北\n收件箱\n工作\n团队\n聊天\n自动化\n设置\n设置\n个人\n个人资料\n偏好设置\n通知\n快捷键\nAPI Token\n工作区\n常规\n成员\n任务与工作流\n工作流\n唤醒\n标签\n属性\n快捷操作\n连接与扩展\n代码\n消息渠道\nMCP 服务器\n本设备\n守护进程\n更新\n工作流\n新建工作流\nDefault\n📁\n1 个项目 + 没有项目的任务\n待规划\n待办\n进行中\n审核中\n已完成\nOHOS-QA-20261108-102523\n验收专用，不修改默认工作流\n📁\nOHOS 验收 20261108-102523\n待办\n已完成\n状态库\n未开始\n待规划\n内置\nbacklog\n\n搁置。把任务移到这里不会启动智能体。\n\n待办\n内置\ntodo\n\n排队中。把任务移到这里会启动指派的智能体。\n\n已开始\n进行中\n内置\nin_progress\n审核中\n内置\nin_review\n\n已交付，等待人工审核。会结束自动化运行。\n\n已阻塞\n内置\nblocked\n已完成\n已完成\n内置\ndone\nPR 合并后自动进入\n已关闭\n已取消\n内置\ncancelled\n🦊\n聊天验收测试\n\n\n\n\n🦊\nCodex\n命令栏\n\n搜索、执行命令，或把工作交给智能体",
+    "headings": [
+      "设置",
+      "个人",
+      "工作区",
+      "任务与工作流",
+      "连接与扩展",
+      "本设备",
+      "工作流",
+      "状态库",
+      "未开始",
+      "已开始",
+      "已完成",
+      "已关闭",
+      "命令栏"
+    ]
+  },
+  {
+    "test": "desktop.settings.navigation.wakeups",
+    "status": "PASS",
+    "title": "设置",
+    "text": "北\n收件箱\n工作\n团队\n聊天\n自动化\n设置\n设置\n个人\n个人资料\n偏好设置\n通知\n快捷键\nAPI Token\n工作区\n常规\n成员\n任务与工作流\n工作流\n唤醒\n标签\n属性\n快捷操作\n连接与扩展\n代码\n消息渠道\nMCP 服务器\n本设备\n守护进程\n更新\n唤醒\n\n平台对所有任务生效的规则。每个任务可以在自己的「唤醒」区域单独修改。\n\n子任务结束时\n\n某个阶段的子任务全部结束、且后面还有阶段在等待时，唤醒父任务的负责人；全部子任务结束时再唤醒一次。负责人是成员时，改为发送收件箱通知。\n\n默认开启\n默认指令\n\n发给被唤醒的智能体。留空则使用下方的内置指令。\n\n内置指令\n\nSub-issues of this issue have closed; the trigger facts list each stage and which one is next. If a later stage is waiting, check that its dependencies are met, then move its sub-issues out of backlog so they start. If a sub-issue in the closed stages was cancelled rather than finished, decide whether its work is still needed before advancing. When every sub-issue is closed, bring their results together on this issue and move it forward, or mark it ready for review when nothing remains.\n\n保存\n🦊\n聊天验收测试\n\n\n\n\n🦊\nCodex\n命令栏\n\n搜索、执行命令，或把工作交给智能体",
+    "headings": [
+      "设置",
+      "个人",
+      "工作区",
+      "任务与工作流",
+      "连接与扩展",
+      "本设备",
+      "唤醒",
+      "子任务结束时",
+      "命令栏"
+    ]
+  },
+  {
+    "test": "desktop.settings.navigation.labels",
+    "status": "PASS",
+    "title": "设置",
+    "text": "北\n收件箱\n工作\n团队\n聊天\n自动化\n设置\n设置\n个人\n个人资料\n偏好设置\n通知\n快捷键\nAPI Token\n工作区\n常规\n成员\n任务与工作流\n工作流\n唤醒\n标签\n属性\n快捷操作\n连接与扩展\n代码\n消息渠道\nMCP 服务器\n本设备\n守护进程\n更新\n标签\n北极星 工作区\n\n任务标签与 skill 标签互相独立。\n\n任务\n1\nSkill\n0\n新建标签\n名称\n描述\n使用数量\n更新时间\nohos-qa-20261108-102523\n\n—\n\n已使用 0 次\n2026/11/8\n🦊\n聊天验收测试\n\n\n\n\n🦊\nCodex\n命令栏\n\n搜索、执行命令，或把工作交给智能体",
+    "headings": [
+      "设置",
+      "个人",
+      "工作区",
+      "任务与工作流",
+      "连接与扩展",
+      "本设备",
+      "标签",
+      "命令栏"
+    ]
+  },
+  {
+    "test": "desktop.settings.navigation.properties",
+    "status": "PASS",
+    "title": "设置",
+    "text": "北\n收件箱\n工作\n团队\n聊天\n自动化\n设置\n设置\n个人\n个人资料\n偏好设置\n通知\n快捷键\nAPI Token\n工作区\n常规\n成员\n任务与工作流\n工作流\n唤醒\n标签\n属性\n快捷操作\n连接与扩展\n代码\n消息渠道\nMCP 服务器\n本设备\n守护进程\n更新\n属性\n北极星 工作区\n显示已归档\n1/20 个启用中属性\n新建属性\n名称\n类型\n选项\n使用数量\n更新时间\nOHOS-QA-20261108-102523\n文本\n—\n1 个任务\n2026/11/8\n🦊\n聊天验收测试\n\n\n\n\n🦊\nCodex\n命令栏\n\n搜索、执行命令，或把工作交给智能体",
+    "headings": [
+      "设置",
+      "个人",
+      "工作区",
+      "任务与工作流",
+      "连接与扩展",
+      "本设备",
+      "属性",
+      "命令栏"
+    ]
+  },
+  {
+    "test": "desktop.settings.navigation.quick-actions",
+    "status": "PASS",
+    "title": "设置",
+    "text": "北\n收件箱\n工作\n团队\n聊天\n自动化\n设置\n设置\n个人\n个人资料\n偏好设置\n通知\n快捷键\nAPI Token\n工作区\n常规\n成员\n任务与工作流\n工作流\n唤醒\n标签\n属性\n快捷操作\n连接与扩展\n代码\n消息渠道\nMCP 服务器\n本设备\n守护进程\n更新\n快捷操作\n北极星 工作区\n\n在任务侧栏运行预设的智能体和提示词。\n\n新建快捷操作\n名称\n执行者\n可见范围\n使用\n更新时间\n\n还没有快捷操作\n\n例如代码审查或补测试。\n\n🦊\n聊天验收测试\n\n\n\n\n🦊\nCodex\n命令栏\n\n搜索、执行命令，或把工作交给智能体",
+    "headings": [
+      "设置",
+      "个人",
+      "工作区",
+      "任务与工作流",
+      "连接与扩展",
+      "本设备",
+      "快捷操作",
+      "命令栏"
+    ]
+  },
+  {
+    "test": "desktop.settings.navigation.code",
+    "status": "PASS",
+    "title": "设置",
+    "text": "北\n收件箱\n工作\n团队\n聊天\n自动化\n设置\n设置\n个人\n个人资料\n偏好设置\n通知\n快捷键\nAPI Token\n工作区\n常规\n成员\n任务与工作流\n工作流\n唤醒\n标签\n属性\n快捷操作\n连接与扩展\n代码\n消息渠道\nMCP 服务器\n本设备\n守护进程\n更新\n代码\n北极星 工作区\n代码托管\nGitHub\n未连接\n连接 GitHub\n代码仓库\n添加仓库\n暂无仓库。\nPR 与任务联动\nPull Request 侧栏\n在任务详情侧栏中展示关联的 Pull Request。\n任务 ↔ PR 自动关联\nPR 标题或分支名含任务编号（如 POLA-123），或正文里写了 \"Closes POLA-123\" 时，自动关联到对应任务。\nCo-authored-by trailer\n在智能体提交的 commit 中追加 Co-authored-by: multica-agent <github@multica.ai>。\nPR 合并后，任务状态改为\n关联的 PR 全部合并后生效，只影响之后合并的 PR。\n已完成\n🦊\n聊天验收测试\n\n\n\n\n🦊\nCodex\n命令栏\n\n搜索、执行命令，或把工作交给智能体",
+    "headings": [
+      "设置",
+      "个人",
+      "工作区",
+      "任务与工作流",
+      "连接与扩展",
+      "本设备",
+      "代码",
+      "代码托管",
+      "代码仓库",
+      "PR 与任务联动",
+      "命令栏"
+    ]
+  },
+  {
+    "test": "desktop.settings.navigation.channels",
+    "status": "PASS",
+    "title": "设置",
+    "text": "北\n收件箱\n工作\n团队\n聊天\n自动化\n设置\n设置\n个人\n个人资料\n偏好设置\n通知\n快捷键\nAPI Token\n工作区\n常规\n成员\n任务与工作流\n工作流\n唤醒\n标签\n属性\n快捷操作\n连接与扩展\n代码\n消息渠道\nMCP 服务器\n本设备\n守护进程\n更新\n消息渠道\n北极星 工作区\n飞书\n未连接\n在飞书中与智能体对话，或用 /issue 创建任务。\nSlack\n未连接\n在 Slack 中与智能体对话，或用 /issue 创建任务。\n钉钉\n未连接\n在钉钉中与智能体对话，或用 /issue 创建任务。\n企业微信\n未连接\n在企业微信中与智能体对话，或用 /issue 创建任务；无需公网回调地址。\nTelegram\n未连接\n在 Telegram 中与智能体对话，或用 /issue 创建任务。\n🦊\n聊天验收测试\n\n\n\n\n🦊\nCodex\n命令栏\n\n搜索、执行命令，或把工作交给智能体",
+    "headings": [
+      "设置",
+      "个人",
+      "工作区",
+      "任务与工作流",
+      "连接与扩展",
+      "本设备",
+      "消息渠道",
+      "命令栏"
+    ]
+  },
+  {
+    "test": "desktop.settings.navigation.mcp",
+    "status": "PASS",
+    "title": "设置",
+    "text": "北\n收件箱\n工作\n团队\n聊天\n自动化\n设置\n设置\n个人\n个人资料\n偏好设置\n通知\n快捷键\nAPI Token\n工作区\n常规\n成员\n任务与工作流\n工作流\n唤醒\n标签\n属性\n快捷操作\n连接与扩展\n代码\n消息渠道\nMCP 服务器\n本设备\n守护进程\n更新\nMCP 服务器\n北极星 工作区\n\n添加后需在智能体的 MCP 页面分配。\n\n共享 MCP Server\n\n为保护敏感信息，配置保存后不会再次显示。需要调整时，请填写一份完整的新配置；只修改名称不会影响当前配置和智能体分配。\n\n添加 MCP Server\n\n暂无共享 MCP Server\n\n🦊\n聊天验收测试\n\n\n\n\n🦊\nCodex\n命令栏\n\n搜索、执行命令，或把工作交给智能体",
+    "headings": [
+      "设置",
+      "个人",
+      "工作区",
+      "任务与工作流",
+      "连接与扩展",
+      "本设备",
+      "MCP 服务器",
+      "共享 MCP Server",
+      "命令栏"
+    ]
+  },
+  {
+    "test": "desktop.settings.navigation.daemon",
+    "status": "PASS",
+    "title": "设置",
+    "text": "北\n收件箱\n工作\n团队\n聊天\n自动化\n设置\n设置\n个人\n个人资料\n偏好设置\n通知\n快捷键\nAPI Token\n工作区\n常规\n成员\n任务与工作流\n工作流\n唤醒\n标签\n属性\n快捷操作\n连接与扩展\n代码\n消息渠道\nMCP 服务器\n本设备\n守护进程\n更新\n守护进程\n\n此设备的守护进程在应用之外运行（例如 WSL2 中），因此应用无法启动或停止它。请在相应环境中运行 multica daemon start / multica daemon stop。\n\n启动应用时自动运行\n登录时自动启动。\n退出应用时自动停止\n关闭桌面端时停止守护进程。\nCLI 状态\n未找到 multica CLI。安装后才能管理守护进程。\n安装指南\n诊断信息\n状态\n运行中\n运行时长\n17m\nPID\n56016\n守护进程 ID\n01a1b8da-a6fe-74dd-9969-101ddee18c69\n配置档案\ndesktop-api.multica.ai\n服务器 URL\nhttps://api.multica.ai\n设备名称\nlocalhost\n工作区\n1\n🦊\n聊天验收测试\n\n\n\n\n🦊\nCodex\n命令栏\n\n搜索、执行命令，或把工作交给智能体",
+    "headings": [
+      "设置",
+      "个人",
+      "工作区",
+      "任务与工作流",
+      "连接与扩展",
+      "本设备",
+      "守护进程",
+      "诊断信息",
+      "命令栏"
+    ]
+  },
+  {
+    "test": "desktop.settings.navigation.updates",
+    "status": "PASS",
+    "title": "设置",
+    "text": "北\n收件箱\n工作\n团队\n聊天\n自动化\n设置\n设置\n个人\n个人资料\n偏好设置\n通知\n快捷键\nAPI Token\n工作区\n常规\n成员\n任务与工作流\n工作流\n唤醒\n标签\n属性\n快捷操作\n连接与扩展\n代码\n消息渠道\nMCP 服务器\n本设备\n守护进程\n更新\n更新\n当前版本\nv0.8.1\n后台自动更新\n开启后，桌面端会在启动后和每小时检查更新，并在后台下载可用版本。\n检查更新\n\n下载完成后会提示重启。\n\n立即检查\n🦊\n聊天验收测试\n\n\n\n\n🦊\nCodex\n命令栏\n\n搜索、执行命令，或把工作交给智能体",
+    "headings": [
+      "设置",
+      "个人",
+      "工作区",
+      "任务与工作流",
+      "连接与扩展",
+      "本设备",
+      "更新",
+      "命令栏"
+    ]
+  }
+]

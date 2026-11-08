@@ -1,0 +1,20 @@
+{
+  "runs": [
+    {
+      "autopilot_id": "e0b231c0-8e28-4140-b50e-3977ae210145",
+      "completed_at": "2026-11-08T02:29:05Z",
+      "created_at": "2026-11-08T02:28:41Z",
+      "failure_reason": null,
+      "id": "01a1b8fc-8e22-705c-a1d2-6456cd20a0f7",
+      "issue_id": "01a1b8fc-8e2b-7839-b743-950d060d4ad6",
+      "result": null,
+      "source": "manual",
+      "status": "completed",
+      "task_id": "01a1b8fc-8e3a-7149-8c2d-42e862b5b94a",
+      "trigger_id": null,
+      "trigger_payload": null,
+      "triggered_at": "2026-11-08T02:28:41Z"
+    }
+  ],
+  "total": 1
+}

@@ -1,0 +1,254 @@
+Update an issue
+
+USAGE
+  multica issue update <id> [flags]
+
+FLAGS
+      --allow-external-file          Allow --description-file / --attachment to read a path outside the current working directory. Off by default so a stale temp file from another run/environment can't be picked up (MUL-4252).
+      --assignee string              New assignee name (member, agent, or squad; fuzzy match)
+      --assignee-id string           New assignee UUID — member, agent, or squad (mutually exclusive with --assignee)
+      --attachment stringArray       Local file path to attach (one literal path per flag; repeat --attachment for multiple files); references are appended to the end of the description
+      --description string           New description (decodes \n, \r, \t, \\; pipe via --description-stdin to preserve literal backslashes)
+      --description-file string      Read new description from a UTF-8 file (preserves multi-line content verbatim; use this on Windows when stdin piping mangles non-ASCII bytes). The path must be inside the current working directory unless --allow-external-file is set.
+      --description-stdin            Read new description from stdin (preserves multi-line content verbatim)
+      --due-date string              New due date (calendar day, YYYY-MM-DD)
+      --duplicate-of string          Mark the issue as a duplicate of this original issue (key like MUL-123, or full UUID) and cancel it; --status, if given, must be cancelled, and description/attachment changes must go in a separate update
+  -h, --help                         help for update
+      --no-start                     Apply the update without starting an agent run
+      --output string                Output format: table or json (default "json")
+      --parent string                Parent issue ID (use --parent "" to clear)
+      --position issue reorder       Ordering position within the board column (lower sorts first); prefer issue reorder for relative moves
+      --pr-auto-complete string      Change status when linked PRs merge: on or off (on takes effect at the next PR event)
+      --priority string              New priority
+      --project string               Project ID
+      --stage issue create --stage   Stage ordinal (>=1) for this sub-issue; see issue create --stage
+      --start-date string            New start date (calendar day, YYYY-MM-DD; pass empty string to clear)
+      --status string                New status
+      --title string                 New title
+
+INHERITED FLAGS
+  --help   Show help for command
+
+LEARN MORE
+  Use `multica <command> <subcommand> --help` for more information about a command.
+Add a comment to an issue.
+
+A plain comment reaches a busy agent only after its current run ends. To add the message to a run that is in progress instead, pass --steer <run-id> (repeatable; from `multica issue runs <issue-id> --active`) or --steer-active for every running agent on the issue you may steer. You may steer an agent's run exactly when your comment could start that agent; an agent never steers its own run, and one agent can add at most 3 messages to a run (10 from all agents). The steered agents are mentioned in the comment. Only a run that accepts additional messages can be steered (`can_supplement: true` in `multica issue runs <issue-id> --active --output json`). A run that cannot take the message gets the normal trigger; the command reports per run whether it was steered or queued, coalesced, deferred or blocked. If a steered run ends before reading an agent's message, the message is handled in a follow-up run. Steering cannot carry attachments.
+
+USAGE
+  multica issue comment add <issue-id> [flags]
+
+FLAGS
+      --allow-external-file   Allow --content-file / --attachment to read a path outside the current working directory. Off by default so a stale file from another run/environment can't be picked up (MUL-4252).
+      --attachment            File path to attach (one literal path per flag; repeat --attachment for multiple files). Non-image files, HTML included, show as file cards that open in the viewer; to render a chart inside the comment, put a `html or ```mermaid block in the content instead
+      --content string        Comment content (decodes \n, \r, \t, \\; pipe via --content-stdin for multi-line bodies or to preserve literal backslashes)
+      --content-file string   Read comment content from a UTF-8 file (preserves multi-line content verbatim; use this on Windows when stdin piping mangles non-ASCII bytes). The path must be inside the current working directory unless --allow-external-file is set.
+      --content-stdin         Read comment content from stdin (preserves multi-line content verbatim)
+  -h, --help                  help for add
+      --output string         Output format: table or json (default "json")
+      --parent string         Parent comment ID to reply under. A comment-triggered agent run must reply under its trigger comment; omitting --parent to post a top-level comment is rejected
+      --steer strings         Run ID (full UUID or short prefix) whose in-progress turn should receive this comment instead of a follow-up run (repeatable)
+      --steer-active          Add this comment to the running turn of every agent on this issue you may steer, and of any other recipient that is running
+
+INHERITED FLAGS
+  --help   Show help for command
+
+LEARN MORE
+  Use `multica <command> <subcommand> --help` for more information about a command.
+Update a comment you authored. Workspace owners and admins can update any comment.
+
+Pass the revision returned by `multica issue comment list <issue-id> --output json`; the update is rejected if another editor changed the comment first. On that rejection, read the latest body and merge your change into it before retrying. Do not just resend with the newer revision: that overwrites the other edit.
+
+Changing the content is a new trigger, not a silent fix: the server cancels runs this comment triggered that are still in flight and re-enqueues every agent the new body mentions. Attachments are left as they are.
+
+USAGE
+  multica issue comment update <comment-id> [flags]
+
+FLAGS
+      --allow-external-file     Allow --content-file to read a path outside the current working directory. Off by default so a stale file from another run/environment can't be picked up (MUL-4252).
+      --content string          New comment content (decodes \n, \r, \t, \\; pipe via --content-stdin for multi-line bodies or to preserve literal backslashes)
+      --content-file string     Read new comment content from a UTF-8 file (preserves multi-line content verbatim; use this on Windows when stdin piping mangles non-ASCII bytes). The path must be inside the current working directory unless --allow-external-file is set.
+      --content-stdin           Read new comment content from stdin (preserves multi-line content verbatim)
+      --expected-revision int   Current positive comment revision from issue comment list --output json (required; prevents overwriting a concurrent edit)
+  -h, --help                    help for update
+      --output string           Output format: table or json (default "json")
+
+INHERITED FLAGS
+  --help   Show help for command
+
+LEARN MORE
+  Use `multica <command> <subcommand> --help` for more information about a command.
+Create a new label
+
+USAGE
+  multica label create [flags]
+
+FLAGS
+      --color string           Hex color like #3b82f6 (required)
+      --description string     Label description
+  -h, --help                   help for create
+      --name string            Label name (required)
+      --output string          Output format: table or json (default "json")
+      --resource-type string   Resource type: issue or skill (default "issue")
+
+INHERITED FLAGS
+  --help   Show help for command
+
+LEARN MORE
+  Use `multica <command> <subcommand> --help` for more information about a command.
+Manage labels on an issue
+
+USAGE
+  multica issue label <command> [flags]
+
+COMMANDS
+  add:     Attach a label to an issue
+  list:    List labels on an issue
+  remove:  Remove a label from an issue
+
+
+FLAGS
+  -h, --help   help for label
+
+INHERITED FLAGS
+  --help   Show help for command
+
+LEARN MORE
+  Use `multica issue label <command> --help` for more information about a command.
+Create a property definition. Types: text, number, select, multi_select,
+date, checkbox, url, actor, multi_actor, multi_text, multi_url. Select types
+take repeatable --option flags:
+  multica property create --name Severity --type select \
+      --option "Critical:#ef4444" --option "Major:#f59e0b" --option "Minor:#6b7280"
+The ":#rrggbb" color suffix is optional.
+
+The actor types hold workspace members; they take no options:
+  multica property create --name Reviewer --type actor
+
+multi_text / multi_url hold free-form lists without options:
+  multica property create --name "Related links" --type multi_url
+Set their values with issue property set --value or issue create --property.
+Use comma-separated values for simple entries, or a JSON array of strings.
+JSON is required for entries containing commas or input starting with "[":
+  multica issue property set <issue-id> --name "Related links" \
+      --value '["https://en.wikipedia.org/wiki/Washington,_D.C."]'
+  multica issue property set <issue-id> --name Aliases --value '["[draft] spec"]'
+
+USAGE
+  multica property create [flags]
+
+FLAGS
+      --description string   Property description
+  -h, --help                 help for create
+      --icon string          Property icon key from the Web picker (for example, flag, tag, or shield)
+      --name string          Property name (required)
+      --option stringArray   Select option as "Name" or "Name:#rrggbb" (repeatable; select types only)
+      --output string        Output format: table or json (default "table")
+      --type string          Property type: text, number, select, multi_select, date, checkbox, url, actor, multi_actor, multi_text, multi_url (required)
+
+INHERITED FLAGS
+  --help   Show help for command
+
+LEARN MORE
+  Use `multica <command> <subcommand> --help` for more information about a command.
+Read saved issue views and the issues they list
+
+USAGE
+  multica view <command> [flags]
+
+COMMANDS
+  get:     Get a view's definition
+  issues:  List the issues a view shows
+  list:    List the saved views you can open
+
+
+FLAGS
+  -h, --help   help for view
+
+INHERITED FLAGS
+  --help   Show help for command
+
+LEARN MORE
+  Use `multica view <command> --help` for more information about a command.
+Create a workflow.
+
+--steps-file takes a JSON array of steps in board order, the same shape the
+API accepts, e.g.:
+
+  [
+    {"status_key": "todo"},
+    {"status_key": "in_review", "handler": {"type": "agent", "id": "<agent-id>"},
+     "instructions": "Review the PR", "next_status_key": "done"},
+    {"new_status": {"name": "QA", "category": "started"}},
+    {"status_key": "done"}
+  ]
+
+Todo, done and cancelled are added when missing.
+
+USAGE
+  multica workflow create [flags]
+
+FLAGS
+      --description string   Workflow description
+  -h, --help                 help for create
+      --name string          Workflow name (required)
+      --output string        Output format: table or json (default "json")
+      --steps-file string    Path to a JSON array of steps
+
+INHERITED FLAGS
+  --help   Show help for command
+
+LEARN MORE
+  Use `multica <command> <subcommand> --help` for more information about a command.
+Create a new squad
+
+USAGE
+  multica squad create [flags]
+
+FLAGS
+      --description string   Squad description
+  -h, --help                 help for create
+      --leader string        Leader agent (name or ID) — required
+      --name string          Squad name (required)
+      --output string        Output format: table or json (default "json")
+
+INHERITED FLAGS
+  --help   Show help for command
+
+LEARN MORE
+  Use `multica <command> <subcommand> --help` for more information about a command.
+Create a new autopilot
+
+USAGE
+  multica autopilot create [flags]
+
+FLAGS
+      --agent string                  Assignee agent (name or ID) — required
+      --description string            Autopilot description (used as the run prompt)
+  -h, --help                          help for create
+      --issue-title-template string   Template for issue titles (create_issue mode). Only {{date}} (UTC, YYYY-MM-DD) is interpolated; any other {{...}} token is rejected at create-time.
+      --mode string                   Execution mode: create_issue or run_only (required)
+      --output string                 Output format: table or json (default "json")
+      --project string                Project ID (optional)
+      --subscriber stringArray        Member subscriber to notify for issues this autopilot creates (name or user ID; repeatable)
+      --title string                  Autopilot title (required)
+
+INHERITED FLAGS
+  --help   Show help for command
+
+LEARN MORE
+  Use `multica <command> <subcommand> --help` for more information about a command.
+Manually trigger an autopilot to run once
+
+USAGE
+  multica autopilot trigger <id> [flags]
+
+FLAGS
+  -h, --help            help for trigger
+      --output string   Output format: table or json (default "json")
+
+INHERITED FLAGS
+  --help   Show help for command
+
+LEARN MORE
+  Use `multica <command> <subcommand> --help` for more information about a command.

@@ -1,0 +1,38 @@
+北
+收件箱
+工作
+团队
+聊天
+自动化
+聊天
+聊天
+暂无历史对话
+🦊
+与 Codex 对话
+
+本机 HarmonyOS 上的 Codex，沿用本机登录与默认模型配置。
+
+让它做一份总结、规划你的一天，或交给它一个小任务。
+
+你能帮我做什么？建议第一个任务推荐一个操作
+自定义开场建议
+
+这是聊天验收。请仅回复 OHOS_CHAT_OK，不调用工具、不修改文件、不创建任务。
+
+我的智能体
+🐳
+Claude Code
+🌙
+OpenCode
+🦊
+Codex
+🐧
+Kimi Code
+🐯
+Hermes
+🍀
+ZCode
+🐙
+Reasonix
+🌞
+DeepSeek Harness

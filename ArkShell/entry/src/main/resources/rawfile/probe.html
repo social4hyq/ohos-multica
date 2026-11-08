@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ArkWeb 桥接验证</title>
+  <!-- 必须是页面的第一个脚本；验证代码先于壳层实现编写。 -->
+  <script>
+    (function () {
+      'use strict';
+      var tests = [];
+      function check(name, body) {
+        try {
+          var detail = body();
+          tests.push({ name: name, pass: true, detail: detail });
+        } catch (error) {
+          tests.push({ name: name, pass: false, detail: String(error) });
+        }
+      }
+      function expect(condition, message) {
+        if (!condition) throw new Error(message);
+      }
+      check('首个页面脚本已能读取 shim', function () {
+        expect(!!window.desktopAPI, 'desktopAPI 缺失');
+        expect(window.__bridgeProbe.order.join(',') === 'shim', 'shim 未先执行');
+        window.__bridgeProbe.order.push('page-first-script');
+        return window.__bridgeProbe.order.join(' → ');
+      });
+      check('注入发生于文档 loading 阶段', function () {
+        expect(window.__bridgeProbe.readyState === 'loading', '注入阶段异常');
+        return window.__bridgeProbe.readyState;
+      });
+      check('注入脚本执行时原生代理已可用', function () {
+        expect(window.__bridgeProbe.proxyAtInjection === true, '原生代理未就绪');
+        expect(!window.__bridgeProbe.error, window.__bridgeProbe.error);
+        return 'nativeBridge 在 shim 内同步调用成功';
+      });
+      check('appInfo 与 runtimeConfig 在首个脚本中同步就绪', function () {
+        expect(window.desktopAPI.appInfo.version === 'probe-1', 'appInfo 不匹配');
+        expect(window.desktopAPI.runtimeConfig.ok === true, 'runtimeConfig 失败');
+        expect(window.desktopAPI.runtimeConfig.config.appUrl === 'https://example.invalid', '配置不匹配');
+        return JSON.stringify(window.desktopAPI.appInfo);
+      });
+      check('字符串同步返回，且不是 Promise', function () {
+        var result = window.nativeBridge.echo('页面首脚本');
+        expect(result === '原生回声:页面首脚本', '回声不匹配');
+        expect(!(result && typeof result.then === 'function'), '返回了 Promise');
+        return result;
+      });
+      check('数字同步返回', function () {
+        var result = window.nativeBridge.add(19, 23);
+        expect(typeof result === 'number' && result === 42, '数字返回异常');
+        return result;
+      });
+      check('布尔值同步返回', function () {
+        var result = window.nativeBridge.isReady();
+        expect(result === true, '布尔值返回异常');
+        return result;
+      });
+      check('JSON 字符串可还原为同步对象快照', function () {
+        var raw = window.nativeBridge.getBootstrapJson();
+        expect(typeof raw === 'string', '返回值不是 JSON 字符串');
+        var result = JSON.parse(raw);
+        expect(result.appInfo.version === 'probe-1', 'JSON 内容异常');
+        return 'JSON.parse 可直接提供 desktopAPI 静态成员';
+      });
+      check('连续同步调用的副作用顺序正确', function () {
+        var first = window.nativeBridge.nextSequence();
+        var second = window.nativeBridge.nextSequence();
+        expect(typeof first === 'number' && second === first + 1, '调用顺序异常');
+        return first + ' → ' + second;
+      });
+      window.__probeResult = {
+        pass: tests.every(function (test) { return test.pass; }),
+        total: tests.length,
+        passed: tests.filter(function (test) { return test.pass; }).length,
+        href: location.href,
+        readyState: document.readyState,
+        order: window.__bridgeProbe ? window.__bridgeProbe.order : [],
+        tests: tests
+      };
+      console.info('ARKSHELL_PROBE_RESULT ' + JSON.stringify(window.__probeResult));
+      document.addEventListener('DOMContentLoaded', function () {
+        var result = window.__probeResult;
+        document.getElementById('status').textContent =
+          (result.pass ? '验证通过' : '验证失败') + '：' + result.passed + '/' + result.total;
+        document.getElementById('status').className = result.pass ? 'pass' : 'fail';
+        var list = document.getElementById('results');
+        result.tests.forEach(function (test) {
+          var item = document.createElement('li');
+          item.className = test.pass ? 'pass' : 'fail';
+          item.textContent = (test.pass ? '通过 · ' : '失败 · ') + test.name + ' — ' + test.detail;
+          list.appendChild(item);
+        });
+        document.getElementById('details').textContent = JSON.stringify(result, null, 2);
+      });
+    })();
+  </script>
+  <style>
+    :root { color-scheme: light dark; --bg: #f5f6f8; --fg: #202733; --panel: #fff; --pass: #136a3d; --fail: #b42318; }
+    @media (prefers-color-scheme: dark) { :root { --bg: #15191f; --fg: #e6eaf0; --panel: #202630; --pass: #7cdaa3; --fail: #ffa49e; } }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 24px 16px; background: var(--bg); color: var(--fg); font: 16px/1.65 system-ui,sans-serif; }
+    main { max-width: 960px; margin: auto; }
+    h1 { font-size: 28px; } li { margin: 12px 0; overflow-wrap: anywhere; }
+    .pass { color: var(--pass); } .fail { color: var(--fail); }
+    pre { background: var(--panel); padding: 16px; white-space: pre-wrap; overflow-wrap: anywhere; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>ArkWeb 桥接验证</h1>
+    <p>本地 rawfile 页面 · 首个内联脚本读取 shim · 同步调用 ArkTS 代理</p>
+    <h2 id="status">等待页面脚本结果</h2>
+    <ol id="results"></ol>
+    <details><summary>原始验证结果</summary><pre id="details"></pre></details>
+  </main>
+</body>
+</html>
