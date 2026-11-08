@@ -32,7 +32,7 @@ mkdir -p "$STATE_DIR"
 LOOP_PIDFILE="$STATE_DIR/supervise.pid"
 LAST_START_FILE="$STATE_DIR/last-start"
 DAEMON_LOG="$STATE_DIR/daemon.log"
-SUPERVISE_LOG="$PROJECT_DIR/logs/supervise.log"
+SUPERVISE_LOG="${MULTICA_SUPERVISE_LOG:-$PROJECT_DIR/logs/supervise.log}"
 
 resolve_port() {
   if [[ -n "${MULTICA_SUPERVISE_PORT:-}" ]]; then

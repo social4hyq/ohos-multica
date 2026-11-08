@@ -1,0 +1,6 @@
+本仓库的 OHOS 适配补丁、构建脚本、supervisor 与文档为 social4hyq 的原创工作；补丁的衍生部分及 `hap-branding/` 内的 Multica 商标资源遵循 Multica License（见 LICENSE，源自 multica-ai/multica 固定提交）。
+
+第三方组件（不随仓分发）：
+- Multica 源码：https://github.com/multica-ai/multica （Multica License，构建时自取）
+- Electron OHOS 预编译包：openharmony-sig/electron（CodeHub 发布，再分发条款待核查，自取）
+- ArkTS/工具链：OpenHarmony 社区

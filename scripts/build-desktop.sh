@@ -12,7 +12,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-SRC="$PROJECT_DIR/source-minimal"
+SRC="${MULTICA_SOURCE:-$PROJECT_DIR/source-minimal}"
 DESKTOP="$SRC/apps/desktop"
 WORK=/data/storage/el2/base/cache/electron-ohos/libelectron/ohos_hap
 PAYLOAD="$WORK/web_engine/src/main/resources/resfile/resources/app"
