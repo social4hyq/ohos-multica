@@ -62,3 +62,20 @@ end
 3. CI 首建（hvigor 容器首跑风险集中在这里）
 4. post_install 签名链路真机验证
 5. autobump 准入：配补丁自动重打，或先上游化补丁（消除最大脆弱性，推荐后者）
+
+## 补丁上游化（2026-11-08 预备完成）
+
+上游 PR 分支已备：`social4hyq/multica` fork 的 `desktop-openharmony-compat`（单提交，仅 3 个平台兼容文件、+42/-19，基于上游当时 main）。要点：接线文件（.npmrc/package.json/pnpm-*.yaml——OHOS 依赖 ports 与锁文件）**不属于上游 PR**，已在提交前还原——它们是分发管道，不是平台兼容；上游 PR 收敛为主进程 net 守卫 + fix-path 打包 + HOME 重定向。验证：补丁在最新 main 文本级干净应用，桌面单测 72 文件/839 用例全绿。PR 描述按上游五段模板写成文件（构建机 el2 cache 的 `multica-upstream-pr-body.md`），创建动作留给用户（提交即同意 Multica License 贡献条款）。
+
+## 推动官方渠道：CodeHub 请求草稿（粘贴即用）
+
+> **标题**：建议为 PC(2in1) 预编译包提供免登录下载渠道（CDN / Release 附件），并在包内附许可文本
+>
+> **正文**：
+> openharmony-sig/electron 的 PC 预编译包（如 v34.9.0-20261030.1-release.zip）当前需华为账号登录 CodeHub 下载，第三方应用（例：Multica 桌面向 HarmonyOS PC 的移植）无法把它作为 CI 构建依赖自动获取，只能让每个用户在构建机上人工登录下载。
+>
+> 两点请求：
+> 1. 为 release 预编译包提供免鉴权的 CDN 直链或发布页永久附件；
+> 2. 在 zip 内附带 LICENSE/NOTICE——当前包内无任何许可文本，下游无法评估再分发的合规性，社区镜像与工具链集成（如 Homebrew 类包管理器）都被卡住。
+>
+> 影响面：所有想把 Electron 应用分发到 HarmonyOS PC 的第三方开发者。
