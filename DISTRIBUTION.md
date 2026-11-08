@@ -4,11 +4,11 @@
 
 | 产物 | 渠道 | 状态 |
 |---|---|---|
-| CLI / daemon / 桌面 HAP | `brew install multica` | 0.8.1_1 已出瓶、本机装瓶与设备验收通过：在线×8、登录控件×0 |
+| CLI / daemon / 桌面 HAP | `brew install multica` | 0.8.1_2 已出瓶、本机装瓶与设备验收通过：在线×8、登录控件×0 |
 
 `multica` 同时提供宿主 CLI/daemon 与**未签名桌面 HAP**。签名使用用户本机的开发者材料与包含该设备的调试 profile，不把证书、私钥或账号状态放进 bottle。
 
-配方以 tap 的 [multica.rb](https://github.com/social4hyq/homebrew-core/blob/main/Formula/m/multica.rb) 为准；OHOS 构建资产作为固定 commit/SHA256 的 resource 获取，不需要独立安装资产包。
+配方以 tap 的 [multica.rb](https://github.com/social4hyq/homebrew-core/blob/main/Formula/m/multica.rb) 为准；OHOS 壳配置差异与安装器由 tap 的 `Patches/multica/` 管理；formula 不再下载 `ohos-multica` 源码归档。后者仅保留文档、测试与工具链维护用途。
 
 ## 安装与更新
 
@@ -57,11 +57,11 @@ brew upgrade multica   # 未安装过则 brew install multica
 brew test multica
 ```
 
-先确认 `$(brew --prefix multica)/libexec/multica-desktop-unsigned.hap` 和 `share/multica/install-hap.sh` 已存在，再卸载本机原来装过的 `multica-desktop`、`multica-ohos`。不要卸载 `multica`，不要删除 `~/.multica`。旧两包不再发布；新的构建资源由统一 formula 内部获取。
+先确认 `$(brew --prefix multica)/libexec/multica-desktop-unsigned.hap` 和 `share/multica/install-hap.sh` 已存在，再卸载本机原来装过的 `multica-desktop`、`multica-ohos`。不要卸载 `multica`，不要删除 `~/.multica`。旧两包不再发布；壳差异与安装器由统一 formula 的本地补丁提供。
 
 卸载旧 formula 不会删除已经安装到设备的 HAP；更新设备应用仍须对新包本机签名并覆盖安装。现有 profile、agent 登录和 supervisor 配置保持不变；整合包不会自动改写它们。原 supervisor 入口仍按 README 配置，不因合成一个安装包就获得系统级后台服务能力。
 
-## 单包本机验证记录
+## 单包整合时的本机验证记录（历史）
 
 - `multica 0.8.1_1` 安装回执 `poured_from_bottle=true`；`brew test multica` 同时验证 CLI 和 HAP，通过。
 - 未签名 HAP 249,734,370 字节；SHA256 `6869f49aba25dc5ec829237eacaf502516f98f34620f3b16dd7783722edecf66`。HAP 文件名保留 `multica-desktop-unsigned.hap`，不表示仍有独立桌面 formula。
@@ -76,3 +76,11 @@ brew test multica
 本次交付以**本机装瓶 → 本机材料签名 → 设备安装 → 布局树在线×8、登录×0**为标准；第二台 PC 的全新安装是独立验收，不能由本机结果替代。各 agent 的执行能力及未覆盖功能见 [功能验收矩阵](validation/ACCEPTANCE.md)。
 
 不向 multica-ai 提交上游 PR。OHOS 补丁常驻自有渠道；升级源码版本时必须重验补丁、桌面构建、HAP 运行时依赖和设备连接。autobump 的补丁重打与冲突告警仍是维护项，不把“当前版本已出瓶”写成未来版本必然可构建。
+
+## 最小化适配
+
+- 主源码保持官方 Multica tag，不使用 fork 源码。
+- Electron 壳解包后通过声明式补丁应用名称、深链、原生库提取、未签名配置与权限差异；不再覆盖整份 module 模板，也不调用本仓 branding Python 脚本。
+- 图标直接复制上游 Multica 资源；设备安装器作为 tap 补丁新增文件安装。
+- 当前 Electron 预编译包仍使用已校验的公开镜像，CLT 仍使用已验证的私有镜像；尚未取得可直接替代的官方公开输入，不能据此声称完全消除了非官方资源依赖。
+- 第一轮 `0.8.1_2` 已通过 CI 构建/装瓶测试、本机装瓶、签名安装和新版布局验收（在线×8、登录控件×0）。HAP 249,734,370 字节，SHA256 `5bd267e57245394b55061830eccee901007d5765a049117afaa794062a5c58eb`；关键负载与前一瓶内容哈希一致。证据在本机 `logs/minimality-implementation/`。锁文件、依赖版本和工具链环境未在本轮顺带修改。

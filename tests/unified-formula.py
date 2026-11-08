@@ -12,13 +12,24 @@ class UnifiedFormula(unittest.TestCase):
         self.assertIn('class Multica < Formula', text)
         self.assertIn('std_go_args(output: bin/"multica"', text)
         self.assertIn('"multica-desktop-unsigned.hap"', text)
-        self.assertIn('resource "ohos-assets" do', text)
+        self.assertNotIn('resource "ohos-assets" do', text)
+        self.assertNotIn('social4hyq/ohos-multica/archive/', text)
         self.assertNotIn('Formula["multica-ohos"]', text)
         self.assertNotIn('depends_on "multica-ohos"', text)
-        self.assertIn('pkgshare.install assets/"scripts/install-hap.sh"', text)
+        self.assertIn('pkgshare.install "scripts/install-hap-ohos.sh" => "install-hap.sh"', text)
+        self.assertIn('file "Patches/multica/0002-hap-packaging.patch"', text)
+        self.assertNotIn('module.clean.json5', text)
+        self.assertNotIn('apply-branding.py', text)
 
     def test_only_one_multica_formula_remains(self):
         self.assertEqual(["multica.rb"], sorted(p.name for p in formula.parent.glob("multica*.rb")))
+
+    def test_installer_patch_matches_tested_script(self):
+        patch = formula.parents[2] / "Patches/multica/0002-hap-packaging.patch"
+        section = patch.read_text().split("diff --git a/scripts/install-hap-ohos.sh ", 1)[1]
+        lines = [line[1:] for line in section.splitlines() if line.startswith("+") and not line.startswith("+++")]
+        expected = pathlib.Path(__file__).resolve().parents[1] / "scripts/install-hap.sh"
+        self.assertEqual(expected.read_text(), "\n".join(lines) + "\n")
 
     def test_checks_both_products(self):
         text = formula.read_text().split('  test do', 1)[1]

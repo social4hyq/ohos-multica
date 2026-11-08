@@ -328,3 +328,9 @@ DSH 原先因缺少 Multica profile 被跳过；从官方 `https://github.com/mu
 `multica` 从同一上游源码构建 CLI/daemon 与桌面负载；OHOS 品牌与构建资产改为固定 commit/SHA256 的 resource，不再需要独立资产 formula。桌面包的构建和测试迁入 `multica`，原 `multica-desktop` 与 `multica-ohos` 下线。
 
 统一包的 CLI/daemon、HAP、安装脚本已经本机装瓶验证，daemon 重启后八个 agent 正常；新 HAP 签名安装后的布局树再次验收在线×8、登录控件×0。签名仍使用本机材料，安装包不包含私钥。证据在本机 `logs/consolidation/`。纯 CLI 用户现在也会下载桌面 HAP；任一构建环节失败都会阻止统一包发版。
+
+## Phase 8：取消自有构建资产仓依赖
+
+发布配方已改为直接使用官方 Multica 源码及既有 Electron OHOS 资源，并在壳源码解包后应用 tap 内的配置补丁；安装器也由 tap 补丁携带。`ohos-multica` 不再作为源码归档 resource 下载，完整 module 副本和 branding Python 脚本退出发布构建链。仓库仍用于文档、测试及工具链镜像维护，历史实验脚本不作为发布入口。
+
+本轮不调整锁文件、依赖版本与工具链环境；这些项目须另行逐项裁剪验证。`multica 0.8.1_2` 已完成 CI 出瓶、本机装瓶与签名安装，新版布局验收在线×8、登录控件×0。与上一瓶对照，main/preload、ArkTS 字节码、Electron 库、编译后 module 和运行时 manifest 的内容哈希均一致；HAP ZIP 本身不声明字节级可复现。证据见本机 `logs/minimality-implementation/`。
