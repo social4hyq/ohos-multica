@@ -1,5 +1,5 @@
 # electron-ohos-ci: ci-runner + the minimal HarmonyOS command-line toolchain
-# for building Electron-on-OHOS HAP shells (multica-desktop today; any
+# for building Electron-on-OHOS HAP shells (multica today; any
 # Electron app port can reuse it). Private image (ghcr) — the toolchain is
 # repacked from a licensed system CLT install and is NOT publicly
 # redistributable; do not push to a public registry.

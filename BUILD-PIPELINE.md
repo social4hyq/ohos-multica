@@ -1,5 +1,7 @@
 # HAP 构建流水线
 
+> 当前发布构建走自有 tap 的单一 `multica` formula：同一上游源码构建 CLI/daemon 与桌面 HAP，OHOS 资产为固定资源，CI 使用私有工具链镜像。用户安装与迁移见 [DISTRIBUTION.md](DISTRIBUTION.md)，配方以 tap 的 [multica.rb](https://github.com/social4hyq/homebrew-core/blob/main/Formula/m/multica.rb) 为准。下文保留本机适配实验与诊断流程，不是当前发布包的另一套构建入口；不要绕过 formula 在本机重新构建发布产物。
+
 目标：从本目录产出**干净** multica 桌面 HAP（无 route1 探针、无 `[obs-*]` 观测日志），签名并安装到本机。
 
 版本锚点（勿随手漂移，升级需重验收）：

@@ -4,7 +4,7 @@
 
 ## 当前分发状态
 
-桌面 HAP 已进入 `multica-desktop` bottle 渠道；运行时依赖与设备权限修复均已合并，`0.8.1_2` 已在本机装瓶、签名并安装到设备。已完成启动、登录和新版布局树验收：我的智能体在线×8，登录控件×0。安装、私有 CI 工具链和本机签名流程统一见 [DISTRIBUTION.md](DISTRIBUTION.md)。下面保留适配实验的历史过程，不代表每一段的“尚未验证”仍是当前状态。
+统一由 `brew install multica` 安装 CLI、daemon、未签名桌面 HAP 和设备安装脚本，不再需要三个 formula。统一包 `0.8.1_1` 已完成 CI 出瓶、本机装瓶、签名、设备安装启动及布局树验收：我的智能体在线×8，登录控件×0。安装、旧包迁移、私有 CI 工具链和本机签名流程统一见 [DISTRIBUTION.md](DISTRIBUTION.md)。下面保留适配实验的历史过程，不代表每一段的“尚未验证”仍是当前状态。
 
 ## ArkWeb 最小壳
 
@@ -322,3 +322,9 @@ DSH 原先因缺少 Multica profile 被跳过；从官方 `https://github.com/mu
 `multica-desktop 0.8.1_2` 已完成 CI 构建出瓶、本机装瓶（`poured_from_bottle=true`）、本机材料签名、`scripts/install-hap.sh --start` 设备安装与启动。用户完成正常登录后，“团队 → 我的智能体”的布局树确认 Codex、Kimi Code、Claude Code、DeepSeek Harness、Hermes、OpenCode、Reasonix、ZCode 八行均在线，登录控件为零；daemon 健康接口同时列出八个 agent。
 
 本轮修正仅涉及生产依赖打包、壳的请求权限与安装脚本错误检测；HAP 不携带开发依赖、开发者签名材料或 daemon 可执行文件。证据在本机 `logs/runtime-packaging/`：`layout-r2-team.json`、`acceptance-r2.json`、`health-r2-final.json` 及构建、装瓶、签名、安装日志。完整流程与限制见 [DISTRIBUTION.md](DISTRIBUTION.md)。这不是第二台 PC 的全新安装验收，也不代表重新覆盖了所有业务功能。
+
+## Phase 7：三 formula 整合为单包
+
+`multica` 从同一上游源码构建 CLI/daemon 与桌面负载；OHOS 品牌与构建资产改为固定 commit/SHA256 的 resource，不再需要独立资产 formula。桌面包的构建和测试迁入 `multica`，原 `multica-desktop` 与 `multica-ohos` 下线。
+
+统一包的 CLI/daemon、HAP、安装脚本已经本机装瓶验证，daemon 重启后八个 agent 正常；新 HAP 签名安装后的布局树再次验收在线×8、登录控件×0。签名仍使用本机材料，安装包不包含私钥。证据在本机 `logs/consolidation/`。纯 CLI 用户现在也会下载桌面 HAP；任一构建环节失败都会阻止统一包发版。

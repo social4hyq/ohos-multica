@@ -4,34 +4,32 @@
 
 | 产物 | 渠道 | 状态 |
 |---|---|---|
-| daemon / CLI | `brew install multica` | 已出瓶，本机真实任务闭环已验收 |
-| 补丁、品牌资源与脚本 | `brew install multica-ohos` | 已出瓶，供构建过程使用 |
-| 桌面 GUI | `brew install multica-desktop` | 0.8.1_2 已本机装瓶、签名、设备安装；已启动并完成布局验收：在线×8、登录控件×0 |
+| CLI / daemon / 桌面 HAP | `brew install multica` | 0.8.1_1 已出瓶、本机装瓶与设备验收通过：在线×8、登录控件×0 |
 
-`multica-desktop` 的产物是**未签名 HAP**。签名使用用户本机的开发者材料与包含该设备的调试 profile，不把证书、私钥或账号状态放进 bottle。
+`multica` 同时提供宿主 CLI/daemon 与**未签名桌面 HAP**。签名使用用户本机的开发者材料与包含该设备的调试 profile，不把证书、私钥或账号状态放进 bottle。
 
-配方以 tap 的 [multica-desktop.rb](https://github.com/social4hyq/homebrew-core/blob/main/Formula/m/multica-desktop.rb) 为准；这里不再保留另一份设计用 formula。
+配方以 tap 的 [multica.rb](https://github.com/social4hyq/homebrew-core/blob/main/Formula/m/multica.rb) 为准；OHOS 构建资产作为固定 commit/SHA256 的 resource 获取，不需要独立安装资产包。
 
 ## 安装与更新
 
 ```bash
 brew tap social4hyq/core
-brew install multica multica-desktop
+brew install multica
 
 # 待签名的桌面安装包
-ls "$(brew --prefix multica-desktop)/libexec/multica-desktop-unsigned.hap"
+ls "$(brew --prefix multica)/libexec/multica-desktop-unsigned.hap"
 ```
 
 1. 首次使用，先配置 Multica 生产环境登录、daemon 与本机 agent。配置和现有 supervisor 的运行方式见 [README](README.md)、[构建流水线](BUILD-PIPELINE.md)。
 2. 使用本机开发者材料给上述 HAP 签名。已有 DevEco Studio / DevEco CLI 自动签名材料可以复用，不需要为每次构建重新生成。
-3. 在本仓执行 `bash scripts/install-hap.sh <signed.hap> --start`。脚本会分块传输、强停旧应用、覆盖安装并启动；请先确认 daemon 有 supervisor 保活、设备屏幕已解锁。
-4. 更新时执行 `brew upgrade multica-desktop`，然后重复本机签名和安装。当前不依赖 Electron 自动更新器更新 HAP。
+3. 执行 `bash "$(brew --prefix multica)/share/multica/install-hap.sh" <signed.hap> --start`。脚本会分块传输、强停旧应用、覆盖安装并启动；请先确认 daemon 有 supervisor 保活、设备屏幕已解锁。
+4. 更新时执行 `brew upgrade multica`，然后重复本机签名和安装。当前不依赖 Electron 自动更新器更新 HAP。
 
 `route1/sign-with-app.cjs` 是本机验收使用的辅助脚本：在内存中解码 DevEco 材料口令，调用 `hap-sign-tool sign-app`，输出时遮蔽口令。其 SDK 和工作工程路径是本机路径，**不是跨机器零配置签名器**；换机按 [第二台 PC 验收指南](validation/SECOND-PC-ACCEPTANCE.md) 重新配置，不复制本机私钥来冒充换机验收。
 
 ## CI 构建链
 
-1. 从上游 tag 获取 Multica 源码，应用 tap 的 OHOS 补丁。
+1. 从上游 tag 获取 Multica 源码，应用 tap 的 OHOS 补丁；从同一源码构建 Go CLI/daemon。
 2. 安装构建依赖并运行 electron-vite，产出 main / preload / renderer；不向 HAP 内嵌不可在沙箱执行的 daemon。
 3. 只安装主进程实际 external 的 `@electron-toolkit/utils`、`electron-updater` 及其生产依赖，版本沿用本次源码构建已解析的版本。renderer 依赖已经打进 Vite 产物，不再复制整个开发用 pnpm node_modules。
 4. 使用 Electron OHOS 预编译原生库和壳源码，在 OpenHarmony CI 容器内重新编译 ArkTS、打包未签名 HAP。
@@ -45,19 +43,33 @@ ls "$(brew --prefix multica-desktop)/libexec/multica-desktop-unsigned.hap"
 
 - 镜像配方：[ci/electron-ohos-ci/Dockerfile](ci/electron-ohos-ci/Dockerfile)。
 - 本机工具链打包：[scripts/pack-clt.sh](scripts/pack-clt.sh)。只保留本壳构建所需组件；不支持用这个 NDK-less 子集编译任意 C++ 工程。
-- tap 的 `OHOS_CI_IMAGE_OVERRIDES` 为 `multica-desktop` 指定镜像 digest；私有拉取通过 `GHCR_PULL_TOKEN` 授权，凭据不写进镜像。
+- tap 的 `OHOS_CI_IMAGE_OVERRIDES` 为 `multica` 指定镜像 digest；私有拉取通过 `GHCR_PULL_TOKEN` 授权，凭据不写进镜像。
 - 兼容差异是 hvigor 的 native-host 判断、无系统日志服务时的 stderr 日志适配，以及打包器所需的 SDK clang 运行库。
 - 容器的过高 `RLIMIT_NOFILE` 会触发 OHOS libc FD 表分配异常；构建过程限制上限，不使用 CPU 信息伪造来规避崩溃。
 
 CLT 来自本机工具链安装，未确认公开再分发条件，故保留为私有构建输入。普通用户消费的是已构建的 HAP，不需要拉取该镜像或在本机重编壳。
 
-## 本机验证记录
+## 从旧三包迁移
 
-- `0.8.1_2` 安装回执 `poured_from_bottle=true`，`brew test multica-desktop` 通过。
-- 未签名 HAP 249,734,370 字节；SHA256 `f9d874988b9a28691b5c45fe765dcd5f3369affdcbac0ea0d7ed319bb2749c38`。
-- 编译后的权限仅 `INTERNET`、`GET_NETWORK_INFO`；本机材料签名成功，设备返回 `install bundle successfully.`。
-- 解锁后启动返回 `start ability successfully.`；用户正常登录后，在“团队 → 我的智能体”布局树核验八行均在线、登录控件为零。按叶节点计数消除父子重复，不将简介中的“沿用本机登录”当成登录控件；daemon 健康接口同时列出八个 agent。证据：本机 `logs/runtime-packaging/{layout-r2-team,acceptance-r2,health-r2-final}.json`。
-- 安装脚本回归覆盖旧分片残留、hdc 零退出码掩盖安装失败、启动失败告警；`bash tests/install-hap.sh` 通过。
+```bash
+brew update
+brew upgrade multica   # 未安装过则 brew install multica
+brew test multica
+```
+
+先确认 `$(brew --prefix multica)/libexec/multica-desktop-unsigned.hap` 和 `share/multica/install-hap.sh` 已存在，再卸载本机原来装过的 `multica-desktop`、`multica-ohos`。不要卸载 `multica`，不要删除 `~/.multica`。旧两包不再发布；新的构建资源由统一 formula 内部获取。
+
+卸载旧 formula 不会删除已经安装到设备的 HAP；更新设备应用仍须对新包本机签名并覆盖安装。现有 profile、agent 登录和 supervisor 配置保持不变；整合包不会自动改写它们。原 supervisor 入口仍按 README 配置，不因合成一个安装包就获得系统级后台服务能力。
+
+## 单包本机验证记录
+
+- `multica 0.8.1_1` 安装回执 `poured_from_bottle=true`；`brew test multica` 同时验证 CLI 和 HAP，通过。
+- 未签名 HAP 249,734,370 字节；SHA256 `6869f49aba25dc5ec829237eacaf502516f98f34620f3b16dd7783722edecf66`。HAP 文件名保留 `multica-desktop-unsigned.hap`，不表示仍有独立桌面 formula。
+- 编译后的权限仅 `INTERNET`、`GET_NETWORK_INFO`；本机材料签名后，使用**瓶内安装脚本**部署，设备返回 `install bundle successfully.` 和 `start ability successfully.`。
+- 新 CLI 重启 daemon 后，健康接口为 running，列出八个 agent；新 HAP 的“团队 → 我的智能体”布局树核验八行均在线、登录控件为零。
+- 在线按叶节点计数消除父子重复；不将简介中的“沿用本机登录”当成登录控件。证据在本机 `logs/consolidation/`：`bottle-receipt.json`、`brew-test.log`、`install.log`、`start-final.log`、`layout-unified-final.json`、`acceptance.json`、`health-final.json`。
+- 旧桌面 formula 已从本机卸载，当前仅安装 `multica`，现有设备应用与配置未删除。
+- 回归：`bash tests/install-hap.sh`、`python3 ci/electron-ohos-ci/test_patch_host.py`、`python3 tests/unified-formula.py <tap>/Formula/m/multica.rb`。
 
 ## 验收范围与维护
 
