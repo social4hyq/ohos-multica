@@ -4,7 +4,7 @@
 
 ## 当前分发状态
 
-统一由 `brew install multica` 安装 CLI、daemon、未签名桌面 HAP 和设备安装脚本，不再需要三个 formula。统一包 `0.8.1_1` 已完成 CI 出瓶、本机装瓶、签名、设备安装启动及布局树验收：我的智能体在线×8，登录控件×0。安装、旧包迁移、私有 CI 工具链和本机签名流程统一见 [DISTRIBUTION.md](DISTRIBUTION.md)。下面保留适配实验的历史过程，不代表每一段的“尚未验证”仍是当前状态。
+统一由 `brew install multica` 安装 CLI、daemon、未签名桌面 HAP 和设备安装脚本，不再需要三个 formula。统一包 `0.8.1_3` 已完成 CI 出瓶、本机装瓶、签名、设备安装启动及布局树验收：我的智能体在线×8，登录控件×0。安装、旧包迁移、私有 CI 工具链和本机签名流程统一见 [DISTRIBUTION.md](DISTRIBUTION.md)。下面保留适配实验的历史过程，不代表每一段的“尚未验证”仍是当前状态。
 
 ## ArkWeb 最小壳
 
@@ -334,3 +334,9 @@ DSH 原先因缺少 Multica profile 被跳过；从官方 `https://github.com/mu
 发布配方已改为直接使用官方 Multica 源码及既有 Electron OHOS 资源，并在壳源码解包后应用 tap 内的配置补丁；安装器也由 tap 补丁携带。`ohos-multica` 不再作为源码归档 resource 下载，完整 module 副本和 branding Python 脚本退出发布构建链。仓库仍用于文档、测试及工具链镜像维护，历史实验脚本不作为发布入口。
 
 本轮不调整锁文件、依赖版本与工具链环境；这些项目须另行逐项裁剪验证。`multica 0.8.1_2` 已完成 CI 出瓶、本机装瓶与签名安装，新版布局验收在线×8、登录控件×0。与上一瓶对照，main/preload、ArkTS 字节码、Electron 库、编译后 module 和运行时 manifest 的内容哈希均一致；HAP ZIP 本身不声明字节级可复现。证据见本机 `logs/minimality-implementation/`。
+
+## Phase 9：冻结工作区依赖安装
+
+`multica 0.8.1_3` 的 pnpm 安装改为 `--frozen-lockfile`，保留必要锁文件补丁，不在构建时重新解析工作区依赖。CI 明确报告 `Lockfile is up to date, resolution step is skipped`，源码构建、测试、出瓶与装瓶测试均通过；本机装瓶、签名安装和新版布局再次验收在线×8、登录控件×0。六项关键负载内容哈希仍与整合前一瓶一致，证据为本机 `logs/minimality-implementation/frozen-*`。
+
+这只冻结 pnpm 工作区依赖；精简运行时的独立 npm 安装和 HAP ZIP 元数据并未因此获得完整可复现性保证。重复 overrides、重试/忽略失败配置及其他疑似冗余项仍须分轮删测，不能把本轮结果当成它们均可删除的证明。

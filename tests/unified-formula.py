@@ -31,6 +31,11 @@ class UnifiedFormula(unittest.TestCase):
         expected = pathlib.Path(__file__).resolve().parents[1] / "scripts/install-hap.sh"
         self.assertEqual(expected.read_text(), "\n".join(lines) + "\n")
 
+    def test_dependency_install_is_frozen(self):
+        text = formula.read_text()
+        self.assertIn('"--frozen-lockfile"', text)
+        self.assertNotIn('"--no-frozen-lockfile"', text)
+
     def test_checks_both_products(self):
         text = formula.read_text().split('  test do', 1)[1]
         self.assertIn('multica --version', text)
