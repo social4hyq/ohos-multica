@@ -2,6 +2,10 @@
 
 > **实验性预发布**：本仓是 [multica-ai/multica](https://github.com/multica-ai/multica) 的第三方 OpenHarmony 移植，与 multica-ai、华为无关。GUI HAP 需用本机开发者证书自行签名安装（调试证书绑定设备 UDID）；daemon/CLI 经 Harmonybrew 自有 tap 的 `multica` formula 安装。构建/重建见 [BUILD-PIPELINE.md](BUILD-PIPELINE.md)，功能验收见 [validation/ACCEPTANCE.md](validation/ACCEPTANCE.md)，第二台设备验证见 [validation/SECOND-PC-ACCEPTANCE.md](validation/SECOND-PC-ACCEPTANCE.md)。
 
+## 当前分发状态
+
+桌面 HAP 已进入 `multica-desktop` bottle 渠道；运行时依赖与设备权限修复均已合并，`0.8.1_2` 已在本机装瓶、签名并安装到设备。已完成启动、登录和新版布局树验收：我的智能体在线×8，登录控件×0。安装、私有 CI 工具链和本机签名流程统一见 [DISTRIBUTION.md](DISTRIBUTION.md)。下面保留适配实验的历史过程，不代表每一段的“尚未验证”仍是当前状态。
+
 ## ArkWeb 最小壳
 
 源码：`ArkShell/`。这是独立桥接验证工程，尚未接入 Multica UI、账户或 daemon。
@@ -312,3 +316,9 @@ DSH 原先因缺少 Multica profile 被跳过；从官方 `https://github.com/mu
 - 本机验收：`brew install multica` 装瓶 → `brew test` 过 → supervisor 经 `start-daemon-ohos.sh`（优先 `~/.harmonybrew/bin/multica`）切到 brew 二进制 → health `cli_version=0.8.1`、8 agents → **真实负载闭环**：brew CLI 建单（POLA-16）→ brew daemon 派发 → 本机 Kimi Code 执行并回写（约 40s）——全链路跑在 bottle 产物上
 - 副产品：daemon 不再报 `dev` 版本标识（"快速创建被挡"问题随版本注入消除）
 - 遗留：cask-ohos（GUI HAP 分发通道）与第二台 PC 全新安装验收属分发阶段下一步（后者是"可分发"的唯一硬标准）
+
+## Phase 6：桌面 bottle 本机交付验收
+
+`multica-desktop 0.8.1_2` 已完成 CI 构建出瓶、本机装瓶（`poured_from_bottle=true`）、本机材料签名、`scripts/install-hap.sh --start` 设备安装与启动。用户完成正常登录后，“团队 → 我的智能体”的布局树确认 Codex、Kimi Code、Claude Code、DeepSeek Harness、Hermes、OpenCode、Reasonix、ZCode 八行均在线，登录控件为零；daemon 健康接口同时列出八个 agent。
+
+本轮修正仅涉及生产依赖打包、壳的请求权限与安装脚本错误检测；HAP 不携带开发依赖、开发者签名材料或 daemon 可执行文件。证据在本机 `logs/runtime-packaging/`：`layout-r2-team.json`、`acceptance-r2.json`、`health-r2-final.json` 及构建、装瓶、签名、安装日志。完整流程与限制见 [DISTRIBUTION.md](DISTRIBUTION.md)。这不是第二台 PC 的全新安装验收，也不代表重新覆盖了所有业务功能。

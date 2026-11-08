@@ -16,14 +16,28 @@ parts=$(mktemp -d /data/storage/el2/base/cache/multica-iparts-XXXXXX)
 trap 'rm -r "$parts"' EXIT
 
 split -b 10000000 "$HAP" "$parts/part-"
+hdc shell "rm -f /data/local/tmp/$name-part-*"
 for p in "$parts"/part-*; do
   hdc file send "$p" "/data/local/tmp/$name-$(basename "$p")"
 done
 hdc shell "cat /data/local/tmp/$name-part-* > /data/local/tmp/$name.hap"
 hdc shell aa force-stop com.huawei.ohos_electron
-hdc shell bm install -p "/data/local/tmp/$name.hap"
+if ! install_output=$(hdc shell bm install -p "/data/local/tmp/$name.hap" 2>&1); then
+  printf '%s\n' "$install_output" >&2
+  exit 1
+fi
+printf '%s\n' "$install_output"
+if ! printf '%s\n' "$install_output" | grep -qiE 'install bundle successfully|^success'; then
+  echo "ERROR: HAP installation did not report success" >&2
+  exit 1
+fi
 
 if [[ "$START" == "--start" ]]; then
-  hdc shell aa start -a EntryAbility -b com.huawei.ohos_electron -m electron || \
+  if start_output=$(hdc shell aa start -a EntryAbility -b com.huawei.ohos_electron -m electron 2>&1) &&
+    printf '%s\n' "$start_output" | grep -qi 'start ability successfully'; then
+    printf '%s\n' "$start_output"
+  else
+    printf '%s\n' "$start_output" >&2
     echo "WARN: aa start failed (screen locked?) — start the app manually" >&2
+  fi
 fi

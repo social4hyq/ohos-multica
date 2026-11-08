@@ -1,83 +1,66 @@
-# 分发路线：`multica-desktop` formula 设计与阻塞登记
+# Multica 分发与本机签名
 
-目标形态：`brew install multica-desktop` = CI 构建**未签名 HAP** 进 bottle + 安装时用**用户本机**的开发者材料现场签名（调试证书绑定设备 UDID，签好的 HAP 无法跨设备共享——这是今天真机实证过的硬约束，见 README 路线一与 route1/）。
+## 当前状态
 
-## 前置链核查结论（2026-11-08）
-
-| 环节 | 状态 | 依据 |
+| 产物 | 渠道 | 状态 |
 |---|---|---|
-| 签名器 | ✅ 零成本 | `ohos-sdk`（官方 core 特例 formula）自带 `hap-sign-tool`/`binary-sign-tool`，本机 PATH 实证；不需要自建 hapsigner formula（C++ 版是 GN/ohos-sdk 构建、Java 版要拉 maven/openjdk，均为过度工程） |
-| payload 构建配方 | ✅ 已实证 | pnpm@10.28.2 + `--ignore-scripts` + ohos-signpost + electron 测试桩，完整命令见 BUILD-PIPELINE.md 债务节；Linux 容器可复现（本配方同时在 VM Linux 验证过） |
-| payload 平台无关性 | ✅ 已实证 | electron-vite 产物在 VM Linux 与本机均构建成功 |
-| Electron OHOS 壳 zip | ⛔ **唯一硬阻塞** | 见下节 |
-| 壳工程 hvigor+SDK 编译 | 待实证 | `ohos-sdk` 已在官方 core；壳工程 hvigorw 的容器首建是实施期第一风险点 |
-| autobump 补丁脆弱性 | 结构性 | 上游近乎日更，854 行补丁会高频冲突；autobump 需配补丁重打机制，或先推动补丁上游化 |
+| daemon / CLI | `brew install multica` | 已出瓶，本机真实任务闭环已验收 |
+| 补丁、品牌资源与脚本 | `brew install multica-ohos` | 已出瓶，供构建过程使用 |
+| 桌面 GUI | `brew install multica-desktop` | 0.8.1_2 已本机装瓶、签名、设备安装；已启动并完成布局验收：在线×8、登录控件×0 |
 
-## Electron 壳 zip 核查（Step 3a 实录）
+`multica-desktop` 的产物是**未签名 HAP**。签名使用用户本机的开发者材料与包含该设备的调试 profile，不把证书、私钥或账号状态放进 bottle。
 
-- 349MB 包内**无任何 LICENSE/NOTICE/COPYING 文本**（`unzip -l` 实测）——不是"条款不允许"，是"未附授权文本"
-- `openharmony-sig/electron` 不在 GitHub（API 404），官方发布在 CodeHub/gitee；Electron 系上游 MIT / Chromium BSD，二进制再分发的法律风险低，但保守做法是**不替官方做主**：不自行镜像
-- 校验值已公示在 `electron-prebuilt/README.md`（sha256 `599e97b3…`），任何渠道下载都可验完整性
-- 解锁方式（任一）：官方发无鉴权 CDN 链接；或用户自行决定镜像到自有 releases 并自担条款责任；或对方 PC 一律登录 CodeHub 自取（当前 SECOND-PC 指南的形态）
+配方以 tap 的 [multica-desktop.rb](https://github.com/social4hyq/homebrew-core/blob/main/Formula/m/multica-desktop.rb) 为准；这里不再保留另一份设计用 formula。
 
-## formula 设计（阻塞解除后按此实施）
+## 安装与更新
 
-```ruby
-class MulticaDesktop < Formula
-  desc "Multica desktop GUI for HarmonyOS (unsigned HAP, signed at install)"
-  homepage "https://multica.ai"
-  url "https://github.com/multica-ai/multica/archive/refs/tags/v0.8.1.tar.gz"  # autobump 跟上游 tag
-  sha256 "..."
-  license :cannot_represent
+```bash
+brew tap social4hyq/core
+brew install multica multica-desktop
 
-  livecheck { url :stable, strategy :github_latest }
-
-  depends_on "node" => :build
-  depends_on "ohos-sdk" => :build        # 壳 ArkTS 编译 + 签名器
-  depends_on "multica-ohos" => :build    # 本仓发布的补丁/branding/脚本资产
-
-  # resource "electron-ohos" do           ⛔ 待镜像解锁
-  #   url "..."
-  #   sha256 "..."
-  # end
-
-  def install
-    # 1) 应用 tap 侧 Patches/multica-desktop/0001（同步自本仓 patches/）
-    # 2) pnpm 配方构建桌面 payload（命令固化自 BUILD-PIPELINE.md）
-    # 3) 解 resource 壳 + branding + module.clean.json5，hvigorw assembleHap → 未签名 hap
-    # 4) prefix.install 未签名 hap（单文件产物，bottle 即文件投递）
-  end
-
-  def post_install
-    # ~/.ohos/config 材料在 → hap-sign-tool sign-app 现场签名
-    # 不在 → 保留未签名产物，caveats 给出确切签名命令（材料一次配置终身可用）
-  end
-end
+# 待签名的桌面安装包
+ls "$(brew --prefix multica-desktop)/libexec/multica-desktop-unsigned.hap"
 ```
 
-## 实施顺序（阻塞解除后）
+1. 首次使用，先配置 Multica 生产环境登录、daemon 与本机 agent。配置和现有 supervisor 的运行方式见 [README](README.md)、[构建流水线](BUILD-PIPELINE.md)。
+2. 使用本机开发者材料给上述 HAP 签名。已有 DevEco Studio / DevEco CLI 自动签名材料可以复用，不需要为每次构建重新生成。
+3. 在本仓执行 `bash scripts/install-hap.sh <signed.hap> --start`。脚本会分块传输、强停旧应用、覆盖安装并启动；请先确认 daemon 有 supervisor 保活、设备屏幕已解锁。
+4. 更新时执行 `brew upgrade multica-desktop`，然后重复本机签名和安装。当前不依赖 Electron 自动更新器更新 HAP。
 
-1. 解决 electron-ohos resource（唯一硬阻塞，见上）
-2. tap 建立 `Patches/multica-desktop/0001`（与 `patches/0001-desktop-ohos.patch` 同源同步）
-3. CI 首建（hvigor 容器首跑风险集中在这里）
-4. post_install 签名链路真机验证
-5. autobump 准入：配补丁自动重打，或先上游化补丁（消除最大脆弱性，推荐后者）
+`route1/sign-with-app.cjs` 是本机验收使用的辅助脚本：在内存中解码 DevEco 材料口令，调用 `hap-sign-tool sign-app`，输出时遮蔽口令。其 SDK 和工作工程路径是本机路径，**不是跨机器零配置签名器**；换机按 [第二台 PC 验收指南](validation/SECOND-PC-ACCEPTANCE.md) 重新配置，不复制本机私钥来冒充换机验收。
 
-## 补丁上游化（2026-11-08：用户决定不提交上游 PR）
+## CI 构建链
 
-**决定：不向 multica-ai 提交上游 PR**——与 bun 的桥接策略一致（fork 当桥、OHOS delta 常驻自有渠道，桥为常驻形态）。fork `social4hyq/multica` 的 `desktop-openharmony-compat` 分支保留为 rebase 备用基底（单提交、3 文件、+42/−19，基于当时上游 main，单测 72 文件/839 用例全绿），PR 描述稿存于 el2 cache `multica-upstream-pr-body.md` 备将来改主意时用。
+1. 从上游 tag 获取 Multica 源码，应用 tap 的 OHOS 补丁。
+2. 安装构建依赖并运行 electron-vite，产出 main / preload / renderer；不向 HAP 内嵌不可在沙箱执行的 daemon。
+3. 只安装主进程实际 external 的 `@electron-toolkit/utils`、`electron-updater` 及其生产依赖，版本沿用本次源码构建已解析的版本。renderer 依赖已经打进 Vite 产物，不再复制整个开发用 pnpm node_modules。
+4. 使用 Electron OHOS 预编译原生库和壳源码，在 OpenHarmony CI 容器内重新编译 ArkTS、打包未签名 HAP。
+5. 执行 formula 测试、生成 bottle、验证从 bottle 安装，再回写并合入 tap。
 
-连带影响：autobump 的补丁脆弱性不能用上游化消除，缓解路线改为——multica-desktop formula（阻塞解除后）配**补丁自动重打机制**（bump 时机器 rebase `patches/0001`，冲突则开人工 PR 告警），或对上游降频 pin（数周手动跟一次）。
+原始 #913 bottle 曾错误打入开发依赖（约 877 MiB、47,566 项）。修复的验收不仅检查 HAP 存在，还检查字节码、Electron 库、主进程负载、ZIP CRC，以及不包含 TypeScript / eslint-config 开发树。
 
-## 推动官方渠道：CodeHub 请求草稿（粘贴即用）
+## 私有工具链镜像
 
-> **标题**：建议为 PC(2in1) 预编译包提供免登录下载渠道（CDN / Release 附件），并在包内附许可文本
->
-> **正文**：
-> openharmony-sig/electron 的 PC 预编译包（如 v34.9.0-20261030.1-release.zip）当前需华为账号登录 CodeHub 下载，第三方应用（例：Multica 桌面向 HarmonyOS PC 的移植）无法把它作为 CI 构建依赖自动获取，只能让每个用户在构建机上人工登录下载。
->
-> 两点请求：
-> 1. 为 release 预编译包提供免鉴权的 CDN 直链或发布页永久附件；
-> 2. 在 zip 内附带 LICENSE/NOTICE——当前包内无任何许可文本，下游无法评估再分发的合规性，社区镜像与工具链集成（如 Homebrew 类包管理器）都被卡住。
->
-> 影响面：所有想把 Electron 应用分发到 HarmonyOS PC 的第三方开发者。
+构建使用私有 `ghcr.io/social4hyq/electron-ohos-ci`。它是通用 OpenHarmony ci-runner 的独立派生镜像；不覆盖通用镜像，也不将 HarmonyOS CLT 放到公开 Release。
+
+- 镜像配方：[ci/electron-ohos-ci/Dockerfile](ci/electron-ohos-ci/Dockerfile)。
+- 本机工具链打包：[scripts/pack-clt.sh](scripts/pack-clt.sh)。只保留本壳构建所需组件；不支持用这个 NDK-less 子集编译任意 C++ 工程。
+- tap 的 `OHOS_CI_IMAGE_OVERRIDES` 为 `multica-desktop` 指定镜像 digest；私有拉取通过 `GHCR_PULL_TOKEN` 授权，凭据不写进镜像。
+- 兼容差异是 hvigor 的 native-host 判断、无系统日志服务时的 stderr 日志适配，以及打包器所需的 SDK clang 运行库。
+- 容器的过高 `RLIMIT_NOFILE` 会触发 OHOS libc FD 表分配异常；构建过程限制上限，不使用 CPU 信息伪造来规避崩溃。
+
+CLT 来自本机工具链安装，未确认公开再分发条件，故保留为私有构建输入。普通用户消费的是已构建的 HAP，不需要拉取该镜像或在本机重编壳。
+
+## 本机验证记录
+
+- `0.8.1_2` 安装回执 `poured_from_bottle=true`，`brew test multica-desktop` 通过。
+- 未签名 HAP 249,734,370 字节；SHA256 `f9d874988b9a28691b5c45fe765dcd5f3369affdcbac0ea0d7ed319bb2749c38`。
+- 编译后的权限仅 `INTERNET`、`GET_NETWORK_INFO`；本机材料签名成功，设备返回 `install bundle successfully.`。
+- 解锁后启动返回 `start ability successfully.`；用户正常登录后，在“团队 → 我的智能体”布局树核验八行均在线、登录控件为零。按叶节点计数消除父子重复，不将简介中的“沿用本机登录”当成登录控件；daemon 健康接口同时列出八个 agent。证据：本机 `logs/runtime-packaging/{layout-r2-team,acceptance-r2,health-r2-final}.json`。
+- 安装脚本回归覆盖旧分片残留、hdc 零退出码掩盖安装失败、启动失败告警；`bash tests/install-hap.sh` 通过。
+
+## 验收范围与维护
+
+本次交付以**本机装瓶 → 本机材料签名 → 设备安装 → 布局树在线×8、登录×0**为标准；第二台 PC 的全新安装是独立验收，不能由本机结果替代。各 agent 的执行能力及未覆盖功能见 [功能验收矩阵](validation/ACCEPTANCE.md)。
+
+不向 multica-ai 提交上游 PR。OHOS 补丁常驻自有渠道；升级源码版本时必须重验补丁、桌面构建、HAP 运行时依赖和设备连接。autobump 的补丁重打与冲突告警仍是维护项，不把“当前版本已出瓶”写成未来版本必然可构建。
