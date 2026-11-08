@@ -63,9 +63,11 @@ end
 4. post_install 签名链路真机验证
 5. autobump 准入：配补丁自动重打，或先上游化补丁（消除最大脆弱性，推荐后者）
 
-## 补丁上游化（2026-11-08 预备完成）
+## 补丁上游化（2026-11-08：用户决定不提交上游 PR）
 
-上游 PR 分支已备：`social4hyq/multica` fork 的 `desktop-openharmony-compat`（单提交，仅 3 个平台兼容文件、+42/-19，基于上游当时 main）。要点：接线文件（.npmrc/package.json/pnpm-*.yaml——OHOS 依赖 ports 与锁文件）**不属于上游 PR**，已在提交前还原——它们是分发管道，不是平台兼容；上游 PR 收敛为主进程 net 守卫 + fix-path 打包 + HOME 重定向。验证：补丁在最新 main 文本级干净应用，桌面单测 72 文件/839 用例全绿。PR 描述按上游五段模板写成文件（构建机 el2 cache 的 `multica-upstream-pr-body.md`），创建动作留给用户（提交即同意 Multica License 贡献条款）。
+**决定：不向 multica-ai 提交上游 PR**——与 bun 的桥接策略一致（fork 当桥、OHOS delta 常驻自有渠道，桥为常驻形态）。fork `social4hyq/multica` 的 `desktop-openharmony-compat` 分支保留为 rebase 备用基底（单提交、3 文件、+42/−19，基于当时上游 main，单测 72 文件/839 用例全绿），PR 描述稿存于 el2 cache `multica-upstream-pr-body.md` 备将来改主意时用。
+
+连带影响：autobump 的补丁脆弱性不能用上游化消除，缓解路线改为——multica-desktop formula（阻塞解除后）配**补丁自动重打机制**（bump 时机器 rebase `patches/0001`，冲突则开人工 PR 告警），或对上游降频 pin（数周手动跟一次）。
 
 ## 推动官方渠道：CodeHub 请求草稿（粘贴即用）
 
