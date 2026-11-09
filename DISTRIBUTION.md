@@ -23,7 +23,7 @@ ls "$(brew --prefix multica)/libexec/multica-desktop-unsigned.hap"
 1. 首次使用，先配置 Multica 生产环境登录、daemon 与本机 agent。配置和现有 supervisor 的运行方式见 [README](README.md)、[构建流水线](BUILD-PIPELINE.md)。
 2. 使用本机开发者材料给上述 HAP 签名。已有 DevEco Studio / DevEco CLI 自动签名材料可以复用，不需要为每次构建重新生成。
 3. 执行 `bash "$(brew --prefix multica)/share/multica/install-hap.sh" <signed.hap> --start`。脚本会分块传输、强停旧应用、覆盖安装并启动；请先确认 daemon 有 supervisor 保活、设备屏幕已解锁。
-4. 更新时执行 `brew upgrade multica`，然后重复本机签名和安装。当前不依赖 Electron 自动更新器更新 HAP。
+4. 更新时执行 `brew upgrade multica`；同版本 bottle 重建需要重新验证时执行 `brew reinstall multica`。然后重复本机签名和安装。当前不依赖 Electron 自动更新器更新 HAP。
 
 `route1/sign-with-app.cjs` 是本机验收使用的辅助脚本：在内存中解码 DevEco 材料口令，调用 `hap-sign-tool sign-app`，输出时遮蔽口令。其 SDK 和工作工程路径是本机路径，**不是跨机器零配置签名器**；换机按 [第二台 PC 验收指南](validation/SECOND-PC-ACCEPTANCE.md) 重新配置，不复制本机私钥来冒充换机验收。
 
@@ -90,3 +90,7 @@ brew test multica
 `0.8.1_3` 已使用 `--frozen-lockfile` 完成 CI 构建/出瓶与装瓶测试；CI 报告锁文件无需更新、跳过依赖解析。本机 `brew test multica`、签名、瓶内脚本安装启动以及新版布局在线×8 / 登录控件×0 均通过。未签名 HAP 249,734,370 字节，SHA256 `56c1c29c621dfbb2e562be2209deb56c736651d29af50c4271ad1a7c2ccf2582`。
 
 证据在本机 `logs/minimality-implementation/frozen-*`；`pr923-ci.log` 保存完整 CI 日志。冻结的是 pnpm 工作区安装，独立 npm 运行时依赖安装尚未改成消费固定锁文件，因此不声称整个包已经完全可复现。其他重复配置与环境项尚未裁剪。
+
+### 下载策略删测
+
+同版本 bottle rebuild 已移除自定义 pnpm 重试和超时参数，CI 源码构建、formula 测试、出瓶与装瓶校验通过。本机重装 bottle 后 CLI 字节一致，1307 个 HAP 条目仅 source map JSON 排序不同、解析结果一致；签名安装与布局在线×8 / 登录控件×0 通过。该轮 HAP SHA256 `dbd9dac084ec25fa3c0d6c99ec09d0ff92d267167da0506d5867f0f8d7355097`，日志与比对记录在 `logs/minimality-network/`。版本号仍为 `0.8.1_3`，当前 bottle 信息以 formula 为准。

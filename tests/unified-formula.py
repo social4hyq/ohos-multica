@@ -36,6 +36,13 @@ class UnifiedFormula(unittest.TestCase):
         self.assertIn('"--frozen-lockfile"', text)
         self.assertNotIn('"--no-frozen-lockfile"', text)
 
+    def test_no_project_specific_network_retry_policy(self):
+        patch = formula.parents[2] / "Patches/multica/0001-desktop-ohos.patch"
+        additions = "\n".join(line[1:] for line in patch.read_text().splitlines()
+                              if line.startswith("+") and not line.startswith("+++"))
+        for setting in ("fetchRetries:", "fetchRetryMintimeout:", "fetchRetryMaxtimeout:", "fetchTimeout:"):
+            self.assertNotIn(setting, additions)
+
     def test_checks_both_products(self):
         text = formula.read_text().split('  test do', 1)[1]
         self.assertIn('multica --version', text)

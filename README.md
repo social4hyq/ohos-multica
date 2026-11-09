@@ -340,3 +340,9 @@ DSH 原先因缺少 Multica profile 被跳过；从官方 `https://github.com/mu
 `multica 0.8.1_3` 的 pnpm 安装改为 `--frozen-lockfile`，保留必要锁文件补丁，不在构建时重新解析工作区依赖。CI 明确报告 `Lockfile is up to date, resolution step is skipped`，源码构建、测试、出瓶与装瓶测试均通过；本机装瓶、签名安装和新版布局再次验收在线×8、登录控件×0。六项关键负载内容哈希仍与整合前一瓶一致，证据为本机 `logs/minimality-implementation/frozen-*`。
 
 这只冻结 pnpm 工作区依赖；精简运行时的独立 npm 安装和 HAP ZIP 元数据并未因此获得完整可复现性保证。重复 overrides、重试/忽略失败配置及其他疑似冗余项仍须分轮删测，不能把本轮结果当成它们均可删除的证明。
+
+## Phase 10：删除自定义下载策略
+
+移除补丁中 `fetchRetries`、`fetchRetryMintimeout`、`fetchRetryMaxtimeout`、`fetchTimeout`，不再给上游 pnpm 追加项目专用的网络策略。依赖与锁文件未变，未增加 revision；发布为同版本 bottle rebuild，并通过本机 `brew reinstall multica` 验证。
+
+CLI 字节一致；HAP 的 1307 个条目只有 `ets/sourceMaps.map` 的 JSON 排序不同，解析后完全一致。重新签名安装后，布局验收在线×8、登录控件×0。证据位于本机 `logs/minimality-network/`。
