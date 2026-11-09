@@ -346,3 +346,9 @@ DSH 原先因缺少 Multica profile 被跳过；从官方 `https://github.com/mu
 移除补丁中 `fetchRetries`、`fetchRetryMintimeout`、`fetchRetryMaxtimeout`、`fetchTimeout`，不再给上游 pnpm 追加项目专用的网络策略。依赖与锁文件未变，未增加 revision；发布为同版本 bottle rebuild，并通过本机 `brew reinstall multica` 验证。
 
 CLI 字节一致；HAP 的 1307 个条目只有 `ets/sourceMaps.map` 的 JSON 排序不同，解析后完全一致。重新签名安装后，布局验收在线×8、登录控件×0。证据位于本机 `logs/minimality-network/`。
+
+## Phase 11：去掉重复工作区配置并复核桌面负载
+
+`pnpm-workspace.yaml` 中重复的 `overrides` 与 `patchedDependencies` 已移除，保留 `package.json` 中 pnpm 10.28.2 实际采用的映射和补丁。独立配置探针确认两项生效配置前后一致；锁文件、依赖版本与安装产物未改，因此没有增加 formula revision。PR #925 合并并发布同版本 bottle rebuild；本机 `brew test multica`、材料签名、瓶内 `install-hap.sh` 安装启动及布局验收通过：八个智能体在线，登录控件为零。证据在 `logs/minimality-config/`。
+
+本轮还在本机 `source-minimal` 上实测了 `pnpm deploy --prod --legacy`。直接用桌面完整依赖清单部署得到 57,414 个文件、851 个虚拟仓包（常规文件长度合计约 500 MB；本机文件系统 `du` 报告约 921 MB），并保留了原 package manifest 的开发依赖声明；没有证据证明它能缩小当前生产 HAP，因此不把它直接替换为打包步骤。当前统一 formula 已采用更窄的运行时清单，只安装主进程实际外置的两个依赖，并通过 `npm install --omit=dev` 组装运行时目录；本机 r6 HAP 为 249,734,370 字节、1307 个 ZIP 条目，manifest 无 devDependencies。因已有实现已避免整棵开发依赖树进入 HAP，此次没有再造一个可能扩张负载的 formula PR。探测日志与目录统计在 `logs/payload-prune/`。

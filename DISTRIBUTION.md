@@ -94,3 +94,11 @@ brew test multica
 ### 下载策略删测
 
 同版本 bottle rebuild 已移除自定义 pnpm 重试和超时参数，CI 源码构建、formula 测试、出瓶与装瓶校验通过。本机重装 bottle 后 CLI 字节一致，1307 个 HAP 条目仅 source map JSON 排序不同、解析结果一致；签名安装与布局在线×8 / 登录控件×0 通过。该轮 HAP SHA256 `dbd9dac084ec25fa3c0d6c99ec09d0ff92d267167da0506d5867f0f8d7355097`，日志与比对记录在 `logs/minimality-network/`。版本号仍为 `0.8.1_3`，当前 bottle 信息以 formula 为准。
+
+### 工作区配置去重与桌面负载复核
+
+PR #925 移除了 `pnpm-workspace.yaml` 与 `package.json` 重复的 `overrides`、`patchedDependencies` 映射。针对固定 pnpm 10.28.2 的有效配置探针显示两组映射前后一致；锁文件和依赖版本未变，不增加 formula revision。PR 已合并，当前 bottle 信息以 tap 的 `Formula/m/multica.rb` 为准（0.8.1_3，r6/rebuild2）。
+
+本机从该 bottle 重装后 `brew test multica` 通过；未签名 HAP 为 249,734,370 字节、1307 个 ZIP 条目，SHA256 `f5f514d6e2508fcaf0ca59dd860cee70a2f48e9e527e449b31ae4da99deb8460`。运行时 manifest 仅含 `@electron-toolkit/utils` 与 `electron-updater`，无 `devDependencies`；CLI 与前一轮字节一致。材料签名、瓶内 `install-hap.sh` 安装和启动均成功。`uitest dumpLayout` 按叶节点验收八行智能体在线、登录控件为零；daemon health 为 running 且列出八个 agent。证据在 `logs/minimality-config/`。
+
+评估以 pnpm deploy 替换全量 node_modules 归档时，本机 `source-minimal` 的 `pnpm deploy --prod --legacy` 在完整桌面依赖清单下生成 57,414 个文件、851 个虚拟仓包，常规文件长度合计约 500 MB（本机文件系统 `du` 报告约 921 MB），仍保留完整 app manifest 的开发依赖声明。当前没有证据表明这种部署会缩小 HAP，故不直接用于公式；现行统一 formula 已只安装实际 external 的两个运行时依赖，没有为 deploy 再发一个可能扩张 payload 的 PR。试验日志与统计在 `logs/payload-prune/`。

@@ -43,6 +43,17 @@ class UnifiedFormula(unittest.TestCase):
         for setting in ("fetchRetries:", "fetchRetryMintimeout:", "fetchRetryMaxtimeout:", "fetchTimeout:"):
             self.assertNotIn(setting, additions)
 
+    def test_no_duplicate_workspace_maps(self):
+        patch = formula.parents[2] / "Patches/multica/0001-desktop-ohos.patch"
+        section = patch.read_text().split("diff --git a/pnpm-workspace.yaml ", 1)[1]
+        additions = "\n".join(line[1:] for line in section.splitlines()
+                              if line.startswith("+") and not line.startswith("+++"))
+        self.assertNotIn("overrides:", additions)
+        self.assertNotIn("patchedDependencies:", additions)
+        package_section = patch.read_text().split("diff --git a/package.json ", 1)[1].split("\ndiff --git ", 1)[0]
+        self.assertIn('"@tailwindcss/oxide": "npm:@ohos-npm-ports/tailwindcss-oxide@', package_section)
+        self.assertIn('"lightningcss": "npm:@ohos-npm-ports/lightningcss@', package_section)
+
     def test_checks_both_products(self):
         text = formula.read_text().split('  test do', 1)[1]
         self.assertIn('multica --version', text)
