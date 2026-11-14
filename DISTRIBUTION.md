@@ -20,10 +20,10 @@ brew install multica
 ls "$(brew --prefix multica)/libexec/multica-desktop-unsigned.hap"
 ```
 
-1. 首次使用，先配置 Multica 生产环境登录、daemon 与本机 agent。配置和现有 supervisor 的运行方式见 [README](README.md)、[构建流水线](BUILD-PIPELINE.md)。
-2. 使用本机开发者材料给上述 HAP 签名。已有 DevEco Studio / DevEco CLI 自动签名材料可以复用，不需要为每次构建重新生成。
-3. 执行 `bash "$(brew --prefix multica)/share/multica/install-hap.sh" <signed.hap> --start`。脚本会分块传输、强停旧应用、覆盖安装并启动；请先确认 daemon 有 supervisor 保活、设备屏幕已解锁。
-4. 更新时执行 `brew upgrade multica`；同版本 bottle 重建需要重新验证时执行 `brew reinstall multica`。然后重复本机签名和安装。当前不依赖 Electron 自动更新器更新 HAP。
+1. 首次使用：不需要预先 `multica login`，直接下一步；在桌面里登录后 daemon 由桌面经宿主 bridge 拉起。agent 登录与本机 agent 配置见 [README](README.md)，构建见 [构建流水线](BUILD-PIPELINE.md)。
+2. 执行 `multica install-desktop`：未登录华为开发者账号时先登录，按已连接设备生成本机调试 profile，对 bottle 里的未签名 HAP 本机签名、安装并启动。配对密钥写进签名副本，bottle 里的 HAP 不被修改。需要 `CUSTOM_SANDBOX`/`READ_WRITE_USER_FILE` 时用 `--acl-profile <build-profile.json5>`（须带这两项 ACL 的 AGC 调试 profile；默认自动签名装不上带这两个权限的 HAP）。请先确认设备屏幕已解锁。
+3. 日常启动用 `multica desktop`（确保 host bridge 在运行并打开应用）。想让 bridge 开终端即在，在 `~/.shellrc` 里加一行 `[ -x "$HOME/.harmonybrew/bin/multica" ] && "$HOME/.harmonybrew/bin/multica" desktop start --bridge-only >/dev/null 2>&1 || true`（幂等）。注意用绝对路径：`.zshrc` 先 source `~/.shellrc`、之后才把 `~/.harmonybrew/bin` 加进 PATH，写成裸的 `multica` 在 shellrc 里解析不到、会静默失败。daemon 的启停、日志与崩溃恢复由桌面经 bridge 完成，**不再需要 supervisor**。
+4. 更新时执行 `brew upgrade multica`；同版本 bottle 重建需要重新验证时执行 `brew reinstall multica`。然后重跑 `multica install-desktop`（升级后旧 bridge 会被下一次 `multica desktop start` 自动替换）。当前不依赖 Electron 自动更新器更新 HAP。
 
 `route1/sign-with-app.cjs` 是本机验收使用的辅助脚本：在内存中解码 DevEco 材料口令，调用 `hap-sign-tool sign-app`，输出时遮蔽口令。其 SDK 和工作工程路径是本机路径，**不是跨机器零配置签名器**；换机按 [第二台 PC 验收指南](validation/SECOND-PC-ACCEPTANCE.md) 重新配置，不复制本机私钥来冒充换机验收。
 
@@ -59,7 +59,7 @@ brew test multica
 
 先确认 `$(brew --prefix multica)/libexec/multica-desktop-unsigned.hap` 和 `share/multica/install-hap.sh` 已存在，再卸载本机原来装过的 `multica-desktop`、`multica-ohos`。不要卸载 `multica`，不要删除 `~/.multica`。旧两包不再发布；壳差异与安装器由统一 formula 的本地补丁提供。
 
-卸载旧 formula 不会删除已经安装到设备的 HAP；更新设备应用仍须对新包本机签名并覆盖安装。现有 profile、agent 登录和 supervisor 配置保持不变；整合包不会自动改写它们。原 supervisor 入口仍按 README 配置，不因合成一个安装包就获得系统级后台服务能力。
+卸载旧 formula 不会删除已经安装到设备的 HAP；更新设备应用仍须对新包本机签名并覆盖安装。现有 profile 与 agent 登录保持不变，整合包不会自动改写它们。旧的 supervisor 已退役并删除，由 bridge + `multica desktop` 取代，迁移时应移除 `~/.shellrc` 里对它的调用，并改为 `"$HOME/.harmonybrew/bin/multica" desktop start --bridge-only`（绝对路径，原因见安装与更新第 3 步）；整合包同样不会自动改写 shell 配置。
 
 ## 单包整合时的本机验证记录（历史）
 

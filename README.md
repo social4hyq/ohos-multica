@@ -235,7 +235,7 @@ DSH 原先因缺少 Multica profile 被跳过；从官方 `https://github.com/mu
 
 用户要求实际调用 Codex，创建任务 `POLA-2`（Codex 接入测试）并指派给 Codex。首轮在启动模型前失败：`lock task temp dir /tmp/multica-task-…: permission denied`。源码的 `socketSafeTempBaseDir()` 优先 `/tmp`，仅设置 TMPDIR 不足；通过官方配置项 `MULTICA_AGENT_TEMP_BASE=/data/storage/el2/base/cache` 修复，不改源码。确认两个 daemon 活跃任务数均为 0 后分别停止、用新环境恢复，未删已有运行记录。
 
-新增 `scripts/start-daemon-ohos.sh [profile]`，显式设置 TMPDIR 和 MULTICA_AGENT_TEMP_BASE，再启动 foreground daemon；`bash -n` 通过。以后本机启动 daemon 应走该脚本（如用 setsid/nohup 在外部运行），否则重启后可能再次踩到 `/tmp`。没有增加开机自启。
+新增 `scripts/start-daemon-ohos.sh [profile]`，显式设置 TMPDIR 和 MULTICA_AGENT_TEMP_BASE，再启动 foreground daemon；`bash -n` 通过。（历史记录：该脚本已删除，daemon 现由桌面经 bridge 启动，见「daemon 管理」节；其中 `MULTICA_AGENT_TEMP_BASE` 的结论仍适用，见下。）没有增加开机自启。
 
 对原失败 run 执行 `issue rerun-task --fresh`。新 run `01a1b8f5-653a-7cf6-a799-ad39268f7ebd` 实际调用 Codex 完成，result.output 为“Codex 已通过 Multica 成功调用。”，任务状态 `done`，评论已写回。没有改工程源码；Codex 为 CLI 评论短暂生成了任务工作目录内的 reply.md 并删除。验证的是派单、启动、模型响应、回写及完成状态全链路，而非仅 online。
 
@@ -265,31 +265,29 @@ DSH 原先因缺少 Multica profile 被跳过；从官方 `https://github.com/mu
 
 另：daemon/CLI 侧构建链已摸底——官方 core 的 `go`（1.27.3，自带 OHOS 补丁）直接 `CGO_ENABLED=0 go build` 产出的纯静态 ELF 即带 `.codesign`（`selfsign --check` 通过，chmod +x 即可执行，已用 hello-world 实测），daemon formula 化无需额外签名步骤。
 
-## 外部 daemon supervisor：应用活着就保 daemon 活着（自动拉起，验收通过）
+## daemon 管理：host bridge + `multica desktop`（取代已退役的 supervisor）
 
-背景：route1 关闭后 daemon 只能活在宿主（`scripts/start-daemon-ohos.sh`，正确设置 `TMPDIR`/`MULTICA_AGENT_TEMP_BASE`）。手动启动的缺口是「daemon 被杀/没起时，桌面只能显示未运行」。`scripts/multica-supervise.sh` 补上自愈层：HAP 活着而 daemon 健康端口不通时自动拉起。
+桌面 HAP 在应用沙箱里，读不到宿主 `~/.multica`、也执行不了 CLI。现在由宿主侧常驻的 **`multica-desktop-bridge`**（Go，仅监听 127.0.0.1，Bearer 鉴权）代办：桌面经回环 HTTP 让它执行白名单内的 CLI 命令（`version`、`daemon start|stop|probe-runtimes`）、读写 profile 文件、按偏移读 `daemon.log`。上游桌面的登录同步 token、启停重启、日志面板、崩溃恢复原样生效，体验对齐 macOS。
 
-用法：
+用法（均由 formula 的 `multica` wrapper 提供）：
 
-- `bash scripts/multica-supervise.sh`：单周期判定（打印 `app-not-running` / `daemon-ok` / `daemon-started` 等）
-- `bash scripts/multica-supervise.sh --daemon`：幂等自驻留（pidfile 防重入），`~/.shellrc` 已接入，开终端即确保运行
-- `bash scripts/multica-supervise.sh stop`：停止驻留循环
+- `multica install-desktop [--acl-profile <build-profile.json5>]`：本机签名并安装 HAP，把配对密钥（`~/.multica/desktop-bridge.json`）写进签名副本（bottle 里的 HAP 不动），并先拉起 bridge。默认 HAP 只申请 `INTERNET`/`GET_NETWORK_INFO`，自动签名即可；`--acl-profile` 才额外申请 `CUSTOM_SANDBOX`/`READ_WRITE_USER_FILE`（需带这两项 ACL 的 AGC 调试 profile，否则设备拒装）。
+- `multica desktop [start|stop|status] [--bridge-only]`：`start`（默认）确保 bridge 在运行并打开应用；`--bridge-only` 只起 bridge，适合写进 shell 启动文件；`stop` 只停 bridge，daemon 不受影响；`status` 在 bridge 停止时退出码为 1。
 
-机制要点：
+行为要点（均已真机验收，见 `logs/desktop-bridge/`）：
 
-- 应用探活：宿主 `ps -eo args` 精确匹配 `com.huawei.ohos_electron`（不依赖 hdc）
-- 健康端口：读 `~/.multica/profiles/<profile>/daemon.port`（JSON，取 `port` 字段），缺省回退算法 `19515 + sum(utf8 字节) % 1000`（与 `apps/desktop/src/main/daemon-profile.ts` 的 `healthPortForProfile` 一致）
-- 拉起动作：`setsid nohup bash start-daemon-ohos.sh <profile>`；30 秒启动速率限制防崩溃风暴；daemon stdout 落 `/data/storage/el2/base/files/multica-supervise/daemon.log`，supervisor 状态迁移落 `logs/supervise.log`
-- 两个本机坑（已踩过）：`daemon.port` 是 JSON 不是纯数字；hmdfs 新建脚本拿不到 exec 位，自驻留必须显式 `bash` 起脚本
+- 在桌面里登录后，daemon 由桌面经 bridge 拉起（参数为 `daemon start --foreground --profile <name>`），不再需要另外 `multica login` 或手工起 daemon；运行时页的启动/停止/重启、日志面板可用。
+- daemon 被杀后桌面自动恢复（场景 A）；`brew upgrade` 后旧 bridge 因 CLI 路径失效会在下次 `multica desktop start` 时被自动替换（wrapper 传稳定的 opt 路径，`/health` 的 `cli_ok` 在路径失效时报不健康）。
+- bridge 和 daemon 都不在时，再起 bridge，桌面几秒内（实测 19 秒内含 `daemon start` 自身耗时）把 daemon 补启，条件是已登录过（有 active profile 且宿主 config.json 有 token）（场景 B，#1014）。
+- bridge 不在时桌面会停在「重试设置」；openharmony 上每 5 秒自动重试，bridge 回来后无需手点。
+- 冷启动前要有 bridge：在 `~/.shellrc` 里加一行 `"$HOME/.harmonybrew/bin/multica" desktop start --bridge-only`（幂等）即可，等价于旧 supervisor 的开终端自驻留；必须用绝对路径——`.zshrc` 先 source `~/.shellrc`、之后才把 `~/.harmonybrew/bin` 加进 PATH，裸 `multica` 在那里解析不到、会静默失败。
+- 配对密钥写进了已签名 HAP：更换密钥需重跑 `multica install-desktop`。
 
-验收（2026-11-08 13:05，真实账户，`logs/supervise.log` + hilog 为证）：
+### 已退役并删除：旧 supervisor 与 `start-daemon-ohos.sh`
 
-1. 杀 daemon 前查 `active_task_count=0`（确认无在跑任务）后 kill 28681 端口的 desktop daemon（pid 28672）
-2. supervisor 一个周期内（≤3s）判定「应用活着 + daemon 不通」，自动拉起新 daemon
-3. 新 daemon 约 10 秒绑定健康端口，`daemon_id` 不变（会话连续），40 秒时 `status=running`
-4. 桌面（HAP 内，pid 38397）自动重连：hilog 每 5 秒 `[obs-status] state=running pid=<新pid>`，全程无需人工干预
+旧方案由宿主脚本轮询「HAP 活着而 daemon 健康端口不通」来拉起 daemon（2026-11-08 验收），并用 `start-daemon-ohos.sh` 启动 daemon。现已由 bridge + 桌面自身的恢复/补启取代，两个脚本已从仓库删除（需要时从 git 历史找回）。**不要再引入同类常驻进程**：与桌面并存时重启存在竞态（supervisor 抢先拉起 daemon，桌面的 `daemon start` 报 `already running` 返回 1，见 `logs/desktop-bridge/per-file-patches/restart-button/RESULT.md`；关闭 supervisor 后 3 轮重启均返回 0，见 `restart-no-supervisor/`）。
 
-已知边界：开机后 supervisor 从未拉起过的窗口期内，首次点图标仍显示「未运行」（点击前宿主没有我们的任何进程，平台限制）；`~/.shellrc` 幂等拉起使该窗口在一开终端后即关闭。
+下面各 Phase 小节是当时的验收记录，其中提到的 supervisor、`start-daemon-ohos.sh`、`logs/supervise.log` 均指这套已删除的旧方案，仅作历史说明。
 
 ## Phase 2：可复现构建流水线 + 干净 HAP 上设备（2026-11-08 验收通过）
 

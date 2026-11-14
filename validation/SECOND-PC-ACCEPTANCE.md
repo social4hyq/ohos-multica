@@ -45,16 +45,13 @@ git clone https://github.com/social4hyq/ohos-multica ~/HarmonyPC/Software/ohos-m
 brew install multica
 multica --version        # 期望：multica 0.8.1 (commit: unknown, built: unknown)
 multica login            # 浏览器流（本机回环可达，自动打开）；或 --token 传 PAT
-# supervisor（被杀自愈 + 开终端自驻留）：
-bash ~/HarmonyPC/Software/ohos-multica/scripts/multica-supervise.sh --daemon
-grep -q multica-supervise ~/.shellrc || cat >> ~/.shellrc <<'EOF'
-if [ -f "$HOME/HarmonyPC/Software/ohos-multica/scripts/multica-supervise.sh" ]; then
-  bash "$HOME/HarmonyPC/Software/ohos-multica/scripts/multica-supervise.sh" --daemon > /dev/null 2>&1 || true
-fi
+# daemon 由桌面经 host bridge 管理（旧 supervisor 已退役，不要再装）：
+multica install-desktop            # 本机签名并安装 HAP、写入配对密钥、拉起 bridge、启动应用
+# 开终端即确保 bridge 在运行。必须写绝对路径：.zshrc 先 source ~/.shellrc、之后才把 ~/.harmonybrew/bin 加进 PATH，裸 multica 在 shellrc 里找不到、会静默失败
+grep -q 'multica desktop start' ~/.shellrc || cat >> ~/.shellrc <<'EOF'
+[ -x "$HOME/.harmonybrew/bin/multica" ] && "$HOME/.harmonybrew/bin/multica" desktop start --bridge-only >/dev/null 2>&1 || true
 EOF
-# 起 daemon（supervisor 在场时 HAP 启动也会自动拉起，先起更省事）：
-setsid nohup bash ~/HarmonyPC/Software/ohos-multica/scripts/start-daemon-ohos.sh desktop-api.multica.ai \
-  >> /data/storage/el2/base/files/multica-supervise/daemon.log 2>&1 &
+# 在桌面里登录（或用上面的 multica login），daemon 由桌面拉起；等 ≤30s：
 curl -sf -m 2 http://127.0.0.1:19681/health    # 期望 {"status":"running",...,"cli_version":"0.8.1"}
 ```
 
@@ -88,7 +85,7 @@ bash scripts/install-hap.sh /data/storage/el2/base/cache/electron-ohos/libelectr
 | 3 | 应用启动 | 点桌面图标（或 install-hap 的 --start） | 窗口出、非登录页 | |
 | 4 | agent 在线 | 布局树或「团队→我的智能体」 | 每个 agent 显示在线 | |
 | 5 | 派单回写 | `multica --profile desktop-api.multica.ai issue create --title "PC2 验收 $(date +%s)" --assignee "<agent名>"` 后轮询 `issue runs <id> --output json` | status=completed 且有输出回写 | |
-| 6 | daemon 自愈 | `kill <daemon pid>` 后等 ≤30s | health 自动恢复 running（supervisor 日志 `logs/supervise.log`） | |
+| 6 | daemon 自愈 | `kill <daemon pid>` 后等 ≤30s | health 自动恢复 running，新 daemon 参数无 `--no-auto-update`（桌面经 bridge 拉起；不再看 supervisor 日志） | |
 | 7 | 深链（可选） | 浏览器访问 `http://<本机IP>:<静态服务端口>/deeplink-test.html` 点链接 | 应用收到 want（hilog 抓 `onAcceptWant`） | |
 
 ## 坑位预告（新 PC 上必然/可能遇到）

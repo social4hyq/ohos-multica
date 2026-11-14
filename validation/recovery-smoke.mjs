@@ -1,3 +1,4 @@
+// 历史脚本（2026-11 恢复验收）：依赖已删除的 scripts/start-daemon-ohos.sh，仅留档，不再可直接运行。
 import {connect} from './cdp.mjs';import fs from 'node:fs';import {execFileSync,spawn} from 'node:child_process';
 const c=await connect(),sleep=ms=>new Promise(r=>setTimeout(r,ms));const out=[];
 const cli=process.env.HOME+'/.local/bin/multica';
