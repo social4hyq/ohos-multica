@@ -1,0 +1,11 @@
+# 02 upgrade 2026-11-15 07:53:01
+升级前: multica 0.9.0_9
+or list them with brew outdated.
+tap revision:  revision 10
+outdated: social4hyq/core/multica
+`multica desktop stop` stops the bridge and leaves the daemon running.
+The full flow (signing config shape, bridge pairing) is documented in the
+ohos-multica project: Build Pipeline and Distribution guides at
+https://github.com/social4hyq/ohos-multica .
+升级后: multica 0.9.0_10
+daemon: 64829 bridge: 64597 supervisor: 0

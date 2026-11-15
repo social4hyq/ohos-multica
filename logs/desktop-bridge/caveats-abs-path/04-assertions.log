@@ -1,0 +1,5 @@
+安装版本行含 0.9.0_10: True
+含绝对路径写法: True
+含 PATH 顺序说明: True | 说明整句: True
+不再含裸写法 `multica desktop start --bridge-only`: True
+仍含 multica desktop stop 说明: True
