@@ -43,6 +43,8 @@ function parseArgs(args) {
 
 function findCli(explicit) {
   const candidates = [explicit, process.env.DEVECO_CLI_JS].filter(Boolean);
+  candidates.push(path.resolve(__dirname,
+    "../../libexec/node_modules/@deveco/deveco-cli-openharmony-arm64/dist/cli.js"));
   if (process.env.COMMAND_LINE_TOOL_PATH) {
     candidates.push(path.join(process.env.COMMAND_LINE_TOOL_PATH, "node_modules/@deveco/deveco-cli-openharmony-arm64/dist/cli.js"));
   }
