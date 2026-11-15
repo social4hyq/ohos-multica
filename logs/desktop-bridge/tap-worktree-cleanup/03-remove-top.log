@@ -1,0 +1,29 @@
+# 03 再删 25 个顶层 worktree 2026-11-15 08:16:45
+removed tap-agent-tmp
+removed tap-autostart-resume
+removed tap-bridge-optpath
+removed tap-caveats-path
+removed tap-cli-autoretry
+removed tap-config
+removed tap-desktop-acl
+removed tap-desktop-bridge
+removed tap-desktop-osfix
+removed tap-frozen
+removed tap-minimal
+removed tap-multica-sign
+removed tap-network
+removed tap-per-file-patches
+removed tap-retire-assets
+removed tap-retire-desktop
+removed tap-signedin-start
+removed tap-weaksandbox
+removed tap-work
+removed tap-work2
+removed tap-work3
+removed tap-work4
+removed tap-work5
+removed tap-work6
+removed tap-unified
+失败数: 0
+(eval):4: no matches found: /storage/Users/currentUser/HarmonyPC/Software/ohos-multica/tap-*
+磁盘上剩余 tap-* 目录: 0

@@ -1,0 +1,13 @@
+# 02 先删 9 个嵌套 worktree 2026-11-15 08:16:37
+removed tap-unified/tap-axios-auth
+removed tap-unified/tap-default-paths
+removed tap-unified/tap-desktop-preflight
+removed tap-unified/tap-expose-hdc
+removed tap-unified/tap-hap-installer
+removed tap-unified/tap-hap-installer-writable-output
+removed tap-unified/tap-install-desktop
+removed tap-unified/tap-multica-0.8.2
+removed tap-unified/tap-multica-hap-installer
+失败数: 0
+(eval):4: no matches found: /storage/Users/currentUser/HarmonyPC/Software/ohos-multica/tap-unified/tap-*
+剩余嵌套目录: 0

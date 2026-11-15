@@ -1,0 +1,37 @@
+# 04 删本地分支 2026-11-15 08:16:57
+当前 tap 主克隆分支: main
+-d  Deleted branch multica-agent-temp-base (was e2975cc800).
+-d  Deleted branch multica-autostart-resume (was 1c6ec225eb).
+-d  Deleted branch multica-bridge-opt-path (was cf4be1fc92).
+-d  Deleted branch multica-caveats-abs-path (was 47e17c7c94).
+-d  Deleted branch multica-cli-autoretry (was 0c8ea56ad5).
+-d  Deleted branch multica-dedupe-pnpm-config (was 148247002e).
+-d  Deleted branch multica-desktop-acl (was a9512322e7).
+-d  Deleted branch multica-desktop-bridge (was cfda924c6e).
+-d  Deleted branch multica-desktop-os-fix (was a701fe4087).
+-d  Deleted branch multica-frozen-lockfile (was c5b29f5e3d).
+-d  Deleted branch multica-tap-patches (was 2dd2b30266).
+-d  Deleted branch multica-sign-install (was b052745c6f).
+-d  Deleted branch multica-clean-network (was eac5b7613c).
+-d  Deleted branch multica-per-file-patches (was 13db34b380).
+-d  Deleted branch retire-multica-ohos (was 18c140a91f).
+-d  Deleted branch retire-multica-desktop (was 9b3151ace7).
+-d  Deleted branch multica-signedin-start (was b306f0e6b2).
+-d  Deleted branch consolidate-multica (was b9959785e4).
+-D  Deleted branch multica-empty-proxy-auth (was 58d8d5146e).
+-d  Deleted branch multica-signing-defaults (was f65df37098).
+-d  Deleted branch multica-install-preflight (was 744c20cd01).
+-d  Deleted branch multica-expose-hdc (was 8ae2b1732d).
+-d  Deleted branch hap-installer (was 946b0a975a).
+-d  Deleted branch hap-installer-writable-output (was c3bd800ce3).
+-d  Deleted branch multica-install-desktop (was 502744d6db).
+-d  Deleted branch bump-multica-0.8.2-refactored (was 0057ee9ef0).
+-d  Deleted branch multica-use-hap-installer (was d20cefe40b).
+-d  Deleted branch multica-weak-sandbox (was 414b07a300).
+-d  Deleted branch autobump-multica (was 7cc1ebf35d).
+-D  Deleted branch add-multica-ohos (was 9687e8ff92).
+-d  Deleted branch add-multica-desktop (was c1ab4720a1).
+-d  Deleted branch ci-ghcr-pull-token (was f56acc600f).
+-d  Deleted branch fix-multica-desktop-runtime (was e88b5890e5).
+-d  Deleted branch fix-multica-desktop-permissions (was 0043346782).
+-d 共 32 个，-D 共 2 个，失败: 0
