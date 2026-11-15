@@ -1,0 +1,7 @@
+# 03 装后核对 2026-11-15 07:40:13
+reqPermissions: ['CUSTOM_SANDBOX', 'GET_NETWORK_INFO', 'INTERNET', 'READ_WRITE_USER_FILE']
+reqPermissionStates(0=已授予): ['0', '0', '0', '0']
+updateTime: 1794699595951 appDistributionType/Provision: ['none', 'debug']
+app 进程:  50829 20020253 com.huawei.ohos_electron
+daemon: 64829 running 8 agents  bridge: {"cli_ok":true,"ok":true,"version":"0.9.0"}
+界面: retry=0 buttons=['查看日志', '重启', '停止'] heading=['团队']

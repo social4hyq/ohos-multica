@@ -1,0 +1,13 @@
+# 05 对照：默认签名(无 ACL)的同一探针，经回环 HTTP 回传 2026-11-15 07:42:46
+install bundle successfully.
+start ability successfully.
+(eval):wait:6: pid 56836 is not a child of this shell
+未收到回传（探针没跑起来）
+uid 20020253 | 结果文件: not written: EPERM
+FAIL readdir ~/.multica -> EPERM
+FAIL read profile config.json (size only) -> EPERM
+FAIL read daemon.log tail (size only) -> EPERM
+OK   stat desktop-bridge.json -> mode 660
+FAIL write+read-back+delete ~/.multica/.acl-probe-write -> EPERM
+FAIL write+delete in profile dir -> EPERM
+FAIL exec host CLI multica-cli version -> EACCES

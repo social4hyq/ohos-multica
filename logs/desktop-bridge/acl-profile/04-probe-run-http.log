@@ -1,0 +1,10 @@
+# 04 ACL 版探针（回环回传，与对照同通道）
+uid 20020253 | 结果文件: written
+OK   readdir ~/.multica -> 17 entries
+OK   read profile config.json (size only) -> 196 bytes
+OK   read daemon.log tail (size only) -> 256 bytes
+OK   stat desktop-bridge.json -> mode 660
+OK   write+read-back+delete ~/.multica/.acl-probe-write -> roundtrip ok
+OK   write+delete in profile dir -> ok
+OK   exec host CLI multica-cli version -> multica 0.9.0 (commit: unknown, built: unknown) go: go1.27.4, os/arch:
+宿主 ~/.multica 里的结果文件: 803 bytes

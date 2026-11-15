@@ -1,0 +1,14 @@
+# 06 恢复默认 HAP 2026-11-15 07:43:45
+11-15 07:43:53.840 INFO  - Start sign-app
+11-15 07:43:55.820 INFO  - sign-app success
+Signed HAP: /data/storage/el2/base/cache/hap-installer/signed/com.huawei.ohos_electron.hap
+force stop process successfully.
+install bundle successfully.
+start ability successfully.
+exit=0
+恢复后 reqPermissions: ['GET_NETWORK_INFO', 'INTERNET']
+app:  60796 20020253 com.huawei.ohos_electron
+daemon: 64829 running 8 agents  bridge: {"cli_ok":true,"ok":true,"version":"0.9.0"}  supervisor: 0
+界面: retry=0 buttons=[] heading=[]
+~/.multica 无残留探针文件: 0 个
+前台后: 含登录页文字: False | 工作区导航: []

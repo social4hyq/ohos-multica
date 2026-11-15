@@ -1,0 +1,7 @@
+# 01 前置 2026-11-15 07:39:35
+multica multica 0.9.0_9  supervisor=0  daemon=64829 bridge=64597
+"reqPermissions":["ohos.permission.GET_NETWORK_INFO","ohos.permission.INTERNET""updateTime":1794693615419,"bundleName":"com.huawei.ohos_electron","updateTime":1794693615419
+
+装前 reqPermissions: ['ohos.permission.GET_NETWORK_INFO', 'ohos.permission.INTERNET']
+ACL 配置: /data/storage/el2/base/cache/electron-ohos/libelectron/ohos_hap/build-profile.json5
+3
