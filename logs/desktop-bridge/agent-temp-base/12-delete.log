@@ -1,0 +1,11 @@
+# 12 删除 POLA-17 / POLA-18 2026-11-15 08:06:15
+active_task_count=0
+Deleted issue POLA-17
+Deleted issue POLA-18
+exit=0
+--- issue list 复核
+剩余 issue 数: 16 (删前 18)
+POLA-17 还在: False | POLA-18 还在: False
+标题含 TMPBASE 的: 无
+issue get POLA-17: The requested resource was not found. Check the ID, or run the matching `list` command to see what exists in t
+issue get POLA-18: The requested resource was not found. Check the ID, or run the matching `list` command to see what exists in t

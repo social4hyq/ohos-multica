@@ -1,0 +1,20 @@
+# 02 upgrade 2026-11-15 07:00:42
+You have 2 outdated formulae installed.
+You can upgrade them with brew upgrade
+or list them with brew outdated.
+tap multica revision:   revision 9  bottle rebuild/bottle: 1
+outdated: social4hyq/core/multica
+supervisor: 0
+The desktop app runs in an app sandbox that cannot execute the CLI or read
+~/.multica, so a small loopback bridge runs on the host. `multica
+install-desktop` starts it and pairs it with the app; afterwards run
+`multica desktop` to start the bridge (if needed) and open the app. Logging
+in inside the desktop app then configures and starts the daemon. To start
+only the bridge from a shell startup file, use
+`multica desktop start --bridge-only`; `multica desktop stop` stops it and
+leaves the daemon running.
+
+The full flow (signing config shape, bridge pairing) is documented in the
+ohos-multica project: Build Pipeline and Distribution guides at
+https://github.com/social4hyq/ohos-multica .
+版本: multica 0.9.0_9

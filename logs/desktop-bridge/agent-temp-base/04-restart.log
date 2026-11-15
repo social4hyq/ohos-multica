@@ -1,0 +1,8 @@
+# 04 重启 bridge+daemon 2026-11-15 07:01:52
+active_task_count=0 旧 daemon pid 18899
+停 daemon: Stopping daemon (pid 18899)... Daemon stopped. 
+bridge/daemon 都已停: bridge无响应 / daemon无响应
+新 bridge: 64597 {"cli_ok":true,"ok":true,"version":"0.9.0"}
+t=12s daemon.pid=64829
+t=22s running 8
+daemon args:  64829      1 multica-cli daemon start --foreground --profile desktop-api.multica.ai
